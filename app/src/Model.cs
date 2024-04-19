@@ -9,6 +9,7 @@ namespace ConsoleFileRenamer
             { TextIDs.Option1, "1. lowercase entire filename" },
             { TextIDs.Option2, "2. Capitalize First Letter Of Each Word In Filename" },
             { TextIDs.Option3, "3. UPPERCASE ENTIRE FILENAME" },
+            { TextIDs.Quit, "4. Quit" },
             { TextIDs.OptionsPrompt, "Please choose a renaming style (1 - 3): "},
             { TextIDs.Option1Confirm, "Set the entire filename to lowercase? " },
             { TextIDs.Option2Confirm, "Capitalize the first letter of each word in the filename? " },
@@ -28,7 +29,8 @@ namespace ConsoleFileRenamer
             sb.Append($"\n{GetDisplayText(TextIDs.Header)}");
             sb.Append($"\n{GetDisplayText(TextIDs.Option1)}");
             sb.Append($"\n{GetDisplayText(TextIDs.Option2)}");
-            sb.Append($"\n{GetDisplayText(TextIDs.Option3)}\n");
+            sb.Append($"\n{GetDisplayText(TextIDs.Option3)}");
+            sb.Append($"\n{GetDisplayText(TextIDs.Quit)}\n");
             sb.Append($"\n{GetDisplayText(TextIDs.OptionsPrompt)}");
                 
             return sb.ToString();
@@ -42,6 +44,7 @@ namespace ConsoleFileRenamer
         Option1,
         Option2,
         Option3,
+        Quit,
         OptionsPrompt,
         Option1Confirm,
         Option2Confirm,
