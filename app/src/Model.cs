@@ -4,20 +4,22 @@ namespace ConsoleFileRenamer
     {
         Dictionary<TextIDs, string> displayText = new()
         {
-            { TextIDs.Welcome, "Welcome to the batch file renaming main menu! Please choose a style to get started."},
-            { TextIDs.Header, "-- Renaming Styles --"},
-            { TextIDs.Option1, "1. lowercase entire filename" },
-            { TextIDs.Option2, "2. Capitalize First Letter Of Each Word In Filename" },
-            { TextIDs.Option3, "3. UPPERCASE ENTIRE FILENAME" },
-            { TextIDs.Quit, "4. Quit" },
-            { TextIDs.OptionsPrompt, "Please choose an option (1 - 4): "},
-            { TextIDs.QueryOption1Confirm, "Set the entire filename to lowercase? (Y/N):  " },
-            { TextIDs.QueryOption2Confirm, "Capitalize the first letter of each word in the filename? (Y/N):  " },
-            { TextIDs.QueryOption3Confirm, "Set the entire filename to uppercase? (Y/N):  " },
+            { TextIDs.InfoWelcome, "Welcome to the batch file renaming main menu! Please choose a style to get started."},
+            { TextIDs.InfoHeader, "-- Renaming Styles --"},
+            { TextIDs.InfoOption1, "1. lowercase entire filename" },
+            { TextIDs.InfoOption2, "2. Capitalize First Letter Of Each Word In Filename" },
+            { TextIDs.InfoOption3, "3. UPPERCASE ENTIRE FILENAME" },
+            { TextIDs.InfoQuit, "4. Quit" },
+            { TextIDs.InfoInvalidChoice, "is not a valid choice. "},
+            { TextIDs.InfoCurrentDirectory, $"Current directory is {Directory.GetCurrentDirectory()}. "},
+            { TextIDs.InfoConfirmCurrentDirectory, $"Continuing in current directory. "},
+            { TextIDs.PromptMainMenuOptions, "Please choose an option (1 - 4): "},
+            { TextIDs.PromptEnterNewDirectory, "Please enter a new directory: "},
+            { TextIDs.QueryOption1Confirm, "Set the entire filename to lowercase? (Y/N): " },
+            { TextIDs.QueryOption2Confirm, "Capitalize the first letter of each word in the filename? (Y/N): " },
+            { TextIDs.QueryOption3Confirm, "Set the entire filename to uppercase? (Y/N): " },
             { TextIDs.QueryQuitConfirm, "Quit application? (Y/N):  "},
-            { TextIDs.QuerySwitchDirectory, "Switch to a different working directory? (Y/N): "},
-            { TextIDs.InvalidChoice, "is not a valid choice. "},
-            { TextIDs.DisplayCurrentDirectory, $"Current directory is {Directory.GetCurrentDirectory()}. "},
+            { TextIDs.QueryKeepDirectory, "Keep current directory? (Y/N): "},
         };
 
         /// <summary> Get output text that matches id. </summary>
@@ -28,13 +30,13 @@ namespace ConsoleFileRenamer
         {
             var sb = new System.Text.StringBuilder();
 
-            sb.Append($"{GetDisplayText(TextIDs.Welcome)}\n");
-            sb.Append($"\n{GetDisplayText(TextIDs.Header)}");
-            sb.Append($"\n{GetDisplayText(TextIDs.Option1)}");
-            sb.Append($"\n{GetDisplayText(TextIDs.Option2)}");
-            sb.Append($"\n{GetDisplayText(TextIDs.Option3)}");
-            sb.Append($"\n{GetDisplayText(TextIDs.Quit)}\n");
-            sb.Append($"\n{GetDisplayText(TextIDs.OptionsPrompt)}");
+            sb.Append($"{GetDisplayText(TextIDs.InfoWelcome)}\n");
+            sb.Append($"\n{GetDisplayText(TextIDs.InfoHeader)}");
+            sb.Append($"\n{GetDisplayText(TextIDs.InfoOption1)}");
+            sb.Append($"\n{GetDisplayText(TextIDs.InfoOption2)}");
+            sb.Append($"\n{GetDisplayText(TextIDs.InfoOption3)}");
+            sb.Append($"\n{GetDisplayText(TextIDs.InfoQuit)}\n");
+            sb.Append($"\n{GetDisplayText(TextIDs.PromptMainMenuOptions)}");
                 
             return sb.ToString();
         }
@@ -42,19 +44,21 @@ namespace ConsoleFileRenamer
 
     public enum TextIDs
     {
-        Welcome,
-        Header,
-        Option1,
-        Option2,
-        Option3,
-        Quit,
-        OptionsPrompt,
+        InfoWelcome,
+        InfoHeader,
+        InfoOption1,
+        InfoOption2,
+        InfoOption3,
+        InfoQuit,
+        InfoInvalidChoice,
+        InfoCurrentDirectory,
+        InfoConfirmCurrentDirectory,
+        PromptMainMenuOptions,
+        PromptEnterNewDirectory,
         QueryOption1Confirm,
         QueryOption2Confirm,
         QueryOption3Confirm,
         QueryQuitConfirm,
-        QuerySwitchDirectory,
-        InvalidChoice,
-        DisplayCurrentDirectory,
+        QueryKeepDirectory,
     }
 }
