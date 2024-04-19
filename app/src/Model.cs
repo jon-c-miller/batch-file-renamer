@@ -14,6 +14,7 @@ namespace ConsoleFileRenamer
             { TextIDs.Option1Confirm, "Set the entire filename to lowercase? " },
             { TextIDs.Option2Confirm, "Capitalize the first letter of each word in the filename? " },
             { TextIDs.Option3Confirm, "Set the entire filename to uppercase? " },
+            { TextIDs.QuitConfirm, "Quit application? "},
             { TextIDs.InvalidChoice, "is not a valid choice. "},
         };
 
@@ -49,6 +50,7 @@ namespace ConsoleFileRenamer
         Option1Confirm,
         Option2Confirm,
         Option3Confirm,
+        QuitConfirm,
         InvalidChoice,
     }
 }

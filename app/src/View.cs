@@ -32,6 +32,10 @@ namespace ConsoleFileRenamer
                 case 3:
                     ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.Option3Confirm));
                     break;
+
+                case 4:
+                    ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QuitConfirm));
+                    break;
             }
         }
     }
