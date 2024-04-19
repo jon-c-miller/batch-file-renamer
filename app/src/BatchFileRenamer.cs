@@ -17,7 +17,7 @@ namespace ConsoleFileRenamer
                 // filter out non-integer input
                 if (!int.TryParse(input, out int choice)) continue;
 
-                controller.HandleSelection(choice);
+                continueRenaming = controller.HandleSelection(choice);
             }
         }
     }

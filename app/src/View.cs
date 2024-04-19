@@ -15,9 +15,9 @@ namespace ConsoleFileRenamer
             ConsoleExtensions.PrintToConsole(model.GetMainMenuText());
         }
 
-        public void HandleSelection(int choice)
+        public bool HandleSelection(int choice)
         {
-            if (choice < 1 || choice > 4) return;
+            if (choice < 1 || choice > 4) return true;
 
             switch (choice)
             {
@@ -35,8 +35,10 @@ namespace ConsoleFileRenamer
 
                 case 4:
                     ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QuitConfirm));
-                    break;
+                    return false;
             }
+
+            return true;
         }
     }
 }

@@ -12,6 +12,6 @@ namespace ConsoleFileRenamer
 
         public void ShowPrompt() => view.Prompt();
 
-        public void HandleSelection(int choice) => view.HandleSelection(choice);
+        public bool HandleSelection(int choice) => view.HandleSelection(choice);
     }
 }
