@@ -1,4 +1,3 @@
-
 namespace ConsoleFileRenamer
 {
     public class Controller
@@ -13,9 +12,6 @@ namespace ConsoleFileRenamer
 
         public void ShowPrompt() => view.Prompt();
 
-        public void HandleSelection(int choice)
-        {
-            
-        }
+        public void HandleSelection(int choice) => view.HandleSelection(choice);
     }
 }
