@@ -18,6 +18,19 @@ namespace ConsoleFileRenamer
         /// <summary> Get output text that matches id. </summary>
         public string GetDisplayText(OptionIDs textID) => displayText.ContainsKey(textID) ? displayText[textID] : "";
 
+        /// <summary> Get a list of options to create the main menu. </summary>
+        public string GetMainMenuText()
+        {
+            var sb = new System.Text.StringBuilder();
+
+            sb.Append($"\n{GetDisplayText(OptionIDs.Header)}");
+            sb.Append($"\n{GetDisplayText(OptionIDs.Option1)}");
+            sb.Append($"\n{GetDisplayText(OptionIDs.Option2)}");
+            sb.Append($"\n{GetDisplayText(OptionIDs.Option3)}\n");
+            sb.Append($"\n{GetDisplayText(OptionIDs.OptionsPrompt)}");
+                
+            return sb.ToString();
+        }
     }
 
     public enum OptionIDs
