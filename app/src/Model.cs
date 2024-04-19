@@ -10,7 +10,7 @@ namespace ConsoleFileRenamer
             { TextIDs.Option2, "2. Capitalize First Letter Of Each Word In Filename" },
             { TextIDs.Option3, "3. UPPERCASE ENTIRE FILENAME" },
             { TextIDs.Quit, "4. Quit" },
-            { TextIDs.OptionsPrompt, "Please choose a renaming style (1 - 3): "},
+            { TextIDs.OptionsPrompt, "Please choose an option (1 - 4): "},
             { TextIDs.Option1Confirm, "Set the entire filename to lowercase? " },
             { TextIDs.Option2Confirm, "Capitalize the first letter of each word in the filename? " },
             { TextIDs.Option3Confirm, "Set the entire filename to uppercase? " },
