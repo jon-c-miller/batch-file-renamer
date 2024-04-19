@@ -4,6 +4,7 @@ namespace ConsoleFileRenamer
     {
         Dictionary<TextIDs, string> displayText = new()
         {
+            { TextIDs.Welcome, "Welcome to the batch file renaming main menu! Please choose a style to get started."},
             { TextIDs.Header, "-- Renaming Styles --"},
             { TextIDs.Option1, "1. lowercase entire filename" },
             { TextIDs.Option2, "2. Capitalize First Letter Of Each Word In Filename" },
@@ -23,7 +24,8 @@ namespace ConsoleFileRenamer
         {
             var sb = new System.Text.StringBuilder();
 
-            sb.Append($"{GetDisplayText(TextIDs.Header)}");
+            sb.Append($"{GetDisplayText(TextIDs.Welcome)}\n");
+            sb.Append($"\n{GetDisplayText(TextIDs.Header)}");
             sb.Append($"\n{GetDisplayText(TextIDs.Option1)}");
             sb.Append($"\n{GetDisplayText(TextIDs.Option2)}");
             sb.Append($"\n{GetDisplayText(TextIDs.Option3)}\n");
@@ -35,6 +37,7 @@ namespace ConsoleFileRenamer
 
     public enum TextIDs
     {
+        Welcome,
         Header,
         Option1,
         Option2,
