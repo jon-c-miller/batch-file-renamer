@@ -12,7 +12,7 @@ namespace ConsoleFileRenamer
             {
                 controller.ShowPrompt();
 
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
 
                 // filter out non-integer input
                 if (!int.TryParse(input, out int choice)) continue;
