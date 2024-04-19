@@ -11,15 +11,14 @@ namespace ConsoleFileRenamer
             { TextIDs.InfoOption3, "3. UPPERCASE ENTIRE FILENAME" },
             { TextIDs.InfoQuit, "4. Quit" },
             { TextIDs.InfoInvalidChoice, "is not a valid choice. "},
-            { TextIDs.InfoCurrentDirectory, $"Current directory is {Directory.GetCurrentDirectory()}. "},
-            { TextIDs.InfoConfirmCurrentDirectory, $"Continuing in current directory. "},
+            { TextIDs.QueryConfirmCurrentDirectory, $"Working in current directory of {Directory.GetCurrentDirectory()}. "},
+
             { TextIDs.PromptMainMenuOptions, "Please choose an option (1 - 4): "},
-            { TextIDs.PromptEnterNewDirectory, "Please enter a new directory: "},
+
             { TextIDs.QueryOption1Confirm, "Set the entire filename to lowercase? (Y/N): " },
             { TextIDs.QueryOption2Confirm, "Capitalize the first letter of each word in the filename? (Y/N): " },
             { TextIDs.QueryOption3Confirm, "Set the entire filename to uppercase? (Y/N): " },
             { TextIDs.QueryQuitConfirm, "Quit application? (Y/N):  "},
-            { TextIDs.QueryKeepDirectory, "Keep current directory? (Y/N): "},
         };
 
         /// <summary> Get output text that matches id. </summary>
@@ -51,14 +50,13 @@ namespace ConsoleFileRenamer
         InfoOption3,
         InfoQuit,
         InfoInvalidChoice,
-        InfoCurrentDirectory,
-        InfoConfirmCurrentDirectory,
+        QueryConfirmCurrentDirectory,
+
         PromptMainMenuOptions,
-        PromptEnterNewDirectory,
+
         QueryOption1Confirm,
         QueryOption2Confirm,
         QueryOption3Confirm,
         QueryQuitConfirm,
-        QueryKeepDirectory,
     }
 }

@@ -19,24 +19,28 @@ namespace ConsoleFileRenamer
         {
             if (choice < 1 || choice > 4) return true;
 
+            bool continueSelection = true;
             switch (choice)
             {
                 case 1:
-                    ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.Option1Confirm));
+                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption1Confirm));
                     break;
 
                 case 2:
-                    ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.Option2Confirm));
+                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption2Confirm));
                     break;
 
                 case 3:
-                    ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.Option3Confirm));
+                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption3Confirm));
                     break;
 
                 case 4:
-                    ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QuitConfirm));
-                    return false;
+                    return !ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryQuitConfirm));
             }
+
+            if (continueSelection)
+                continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryConfirmCurrentDirectory), true);
+            Console.ReadLine();
 
             return true;
         }
