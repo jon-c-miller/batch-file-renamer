@@ -23,7 +23,7 @@ namespace ConsoleFileRenamer
         {
             var sb = new System.Text.StringBuilder();
 
-            sb.Append($"\n{GetDisplayText(OptionIDs.Header)}");
+            sb.Append($"{GetDisplayText(OptionIDs.Header)}");
             sb.Append($"\n{GetDisplayText(OptionIDs.Option1)}");
             sb.Append($"\n{GetDisplayText(OptionIDs.Option2)}");
             sb.Append($"\n{GetDisplayText(OptionIDs.Option3)}\n");
