@@ -39,8 +39,10 @@ namespace ConsoleFileRenamer
             }
 
             if (continueSelection)
-                continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryConfirmCurrentDirectory), true);
-            Console.ReadLine();
+            {
+                ConsoleExtensions.PrintToConsole(model.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
+                continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryApplyToCurrentDirectory), true);
+            }
 
             return true;
         }
