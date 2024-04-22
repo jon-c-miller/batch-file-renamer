@@ -19,19 +19,21 @@ namespace ConsoleFileRenamer
         {
             if (choice < 1 || choice > 4) return true;
 
+            ConsoleExtensions.PrintToConsole(model.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
+    
             bool continueSelection = true;
             switch (choice)
             {
                 case 1:
-                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption1Confirm));
+                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption1Confirm), true);
                     break;
 
                 case 2:
-                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption2Confirm));
+                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption2Confirm), true);
                     break;
 
                 case 3:
-                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption3Confirm));
+                    continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption3Confirm), true);
                     break;
 
                 case 4:
@@ -40,7 +42,6 @@ namespace ConsoleFileRenamer
 
             if (continueSelection)
             {
-                ConsoleExtensions.PrintToConsole(model.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
                 continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryApplyToCurrentDirectory), true);
             }
 

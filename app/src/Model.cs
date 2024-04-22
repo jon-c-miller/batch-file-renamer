@@ -15,11 +15,11 @@ namespace ConsoleFileRenamer
 
             { TextIDs.PromptMainMenuOptions, "Please choose an option (1 - 4): " },
 
-            { TextIDs.QueryOption1Confirm, "Set the entire filename to lowercase? (Y/N): " },
-            { TextIDs.QueryOption2Confirm, "Capitalize the first letter of each word in the filename? (Y/N): " },
-            { TextIDs.QueryOption3Confirm, "Set the entire filename to uppercase? (Y/N): " },
+            { TextIDs.QueryOption1Confirm, "Update filenames in the current directory to be lowercase? (Y/N): " },
+            { TextIDs.QueryOption2Confirm, "Update filenames in the current directory to have capitalized words? (Y/N): " },
+            { TextIDs.QueryOption3Confirm, "Update filenames in the current directory to be uppercase? (Y/N): " },
             { TextIDs.QueryQuitConfirm, "Quit application? (Y/N):  " },
-            { TextIDs.QueryApplyToCurrentDirectory, $"Apply changes to files in current directory? (Y/N) " },
+            { TextIDs.QueryApplyToCurrentDirectory, "Confirmation: Apply requested filename changes? (Y/N): " },
         };
 
         /// <summary> Get output text that matches id. </summary>
