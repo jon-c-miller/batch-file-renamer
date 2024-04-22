@@ -2,27 +2,42 @@ namespace ConsoleFileRenamer
 {
     public class Controller : IRequestHandler
     {
-        public Controller()
+        public Controller(IRequestReceiver requestReceiver)
         {
+            this.requestReceiver = requestReceiver;
             view = new(this, model);
         }
 
+        readonly IRequestReceiver requestReceiver;
         readonly Model model = new();
         View view;
 
-        public void ShowPrompt() => view.Prompt();
+        public void IRelayRequest(RequestIDs id) => requestReceiver.IQueueRequest(id);
 
-        public bool HandleSelection(int choice) => view.HandleSelection(choice);
-
-        public void IRelayRequest(RequestIDs id)
+        public bool IHandleRequest(RequestIDs id, params object[] data)
         {
-            ConsoleExtensions.PrintToConsole($"Relayed request {id}", true);
-        }
+            ConsoleExtensions.PrintToConsole("· ");
+            bool yesOrNo = true;
 
-        public bool IHandleRequest(RequestIDs id)
-        {
-            ConsoleExtensions.PrintToConsole($"Handled request {id}", true);
-            return true;
+            switch (id)
+            {
+                case RequestIDs.PrintToConsole:
+                    bool lineBefore = data.Length > 1 ? (bool)data[1] : false;
+                    bool lineAfter = data.Length > 2 ? (bool)data[2] : false;
+                    ConsoleExtensions.PrintToConsole((string)data[0], lineBefore, lineAfter);
+                    break;
+                
+                case RequestIDs.ShowPrompt:
+                    view.Prompt();
+                    break;
+                
+                case RequestIDs.HandleSelection:
+                    int choice = data.Length > 0 ? (int)data[0] : 0;
+                    yesOrNo = view.HandleSelection(choice);
+                    break;
+            }
+
+            return yesOrNo;
         }
     }
 }
