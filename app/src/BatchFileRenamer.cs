@@ -4,20 +4,26 @@ namespace ConsoleFileRenamer
     {
         public void Run()
         {
-            Controller controller = new();
+            RequestPipeline pipeline = new();
+            Controller controller = new(pipeline);
+            pipeline.Initialize(controller, false);
 
             // loop until user chooses to quit
             bool continueRenaming = true;
             while (continueRenaming)
             {
-                controller.ShowPrompt();
+                controller.IHandleRequest(RequestIDs.ShowPrompt);
+
+                pipeline.ProcessRequests();
 
                 var input = Console.ReadLine();
 
                 // filter out non-integer input
                 if (!int.TryParse(input, out int choice)) continue;
 
-                continueRenaming = controller.HandleSelection(choice);
+                continueRenaming = controller.IHandleRequest(RequestIDs.HandleSelection, choice);
+
+                pipeline.ProcessRequests();
             }
         }
     }
