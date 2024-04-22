@@ -2,26 +2,20 @@ using System.Collections.Concurrent;
 
 namespace ConsoleFileRenamer
 {
-    public class RequestPipeline
+    public class RequestPipeline : IRequestReceiver
     {
-        public RequestPipeline(IRequestHandler handler, bool showLogs)
+        IRequestHandler handler;
+        bool showLogs;
+
+        readonly ConcurrentQueue<RequestIDs> pipeline = new();
+
+        public void Initialize(IRequestHandler handler, bool showLogs)
         {
             this.handler = handler;
             this.showLogs = showLogs;
         }
 
-        readonly IRequestHandler handler;
-        readonly bool showLogs;
-
-        readonly ConcurrentQueue<RequestIDs> pipeline = new();
-
-        public void QueueRequest(RequestIDs id)
-        {
-            pipeline.Enqueue(id);
-            if (showLogs) ConsoleExtensions.PrintToConsole($"Queued request {id}. Request queue has {pipeline.Count} requests.", true);
-        }
-
-        public void HandleRequests()
+        public void ProcessRequests()
         {
             while (pipeline.Count > 0)
             {
@@ -31,17 +25,31 @@ namespace ConsoleFileRenamer
                 handler.IHandleRequest(id);
             }
         }
+
+        public void IQueueRequest(RequestIDs id)
+        {
+            pipeline.Enqueue(id);
+            if (showLogs) ConsoleExtensions.PrintToConsole($"Received request {id}. Request queue has {pipeline.Count} requests.", true);
+        }
     }
 
     public interface IRequestHandler
     {
         void IRelayRequest(RequestIDs id);
-        bool IHandleRequest(RequestIDs id);
+        bool IHandleRequest(RequestIDs id, params object[] data);
+    }
+
+    public interface IRequestReceiver
+    {
+        void IQueueRequest(RequestIDs id);
     }
 
     public enum RequestIDs
     {
         Null,
-
+        PrintToConsole,
+        ShowPrompt,
+        HandleSelection,
+        
     }
 }
