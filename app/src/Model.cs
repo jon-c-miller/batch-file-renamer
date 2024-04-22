@@ -18,7 +18,7 @@ namespace ConsoleFileRenamer
             { TextIDs.QueryOption1Confirm, "Update filenames in the current directory to be lowercase? (Y/N): " },
             { TextIDs.QueryOption2Confirm, "Update filenames in the current directory to have capitalized words? (Y/N): " },
             { TextIDs.QueryOption3Confirm, "Update filenames in the current directory to be uppercase? (Y/N): " },
-            { TextIDs.QueryQuitConfirm, "Quit application? (Y/N):  " },
+            { TextIDs.QueryQuitConfirm, "Quit application? (Y/N): " },
             { TextIDs.QueryApplyToCurrentDirectory, "Confirmation: Apply requested filename changes? (Y/N): " },
         };
 
