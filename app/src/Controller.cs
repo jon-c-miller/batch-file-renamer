@@ -4,7 +4,7 @@ namespace ConsoleFileRenamer
     {
         public Controller()
         {
-            view = new(model);
+            view = new(this, model);
         }
 
         readonly Model model = new();

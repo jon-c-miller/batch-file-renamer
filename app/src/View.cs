@@ -2,12 +2,14 @@ namespace ConsoleFileRenamer
 {
     public class View
     {
-        public View(Model model)
+        public View(IRequestHandler controller, Model model)
         {
+            this.controller = controller;
             this.model = model;
         }
 
         Model model;
+        IRequestHandler controller;
 
         public void Prompt()
         {
