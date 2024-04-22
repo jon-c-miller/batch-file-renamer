@@ -17,7 +17,9 @@ namespace ConsoleFileRenamer
 
         public bool HandleSelection(int choice)
         {
+            // reject any choices out of range, or confirm quit
             if (choice < 1 || choice > 4) return true;
+            else if (choice == 4) return !ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryQuitConfirm));
 
             ConsoleExtensions.PrintToConsole(model.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
     
@@ -35,9 +37,6 @@ namespace ConsoleFileRenamer
                 case 3:
                     continueSelection = ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryOption3Confirm), true);
                     break;
-
-                case 4:
-                    return !ConsoleExtensions.YesOrNoPrompt(model.GetDisplayText(TextIDs.QueryQuitConfirm));
             }
 
             if (continueSelection)
