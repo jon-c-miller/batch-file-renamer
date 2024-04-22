@@ -31,7 +31,7 @@ namespace ConsoleFileRenamer
                     view.Prompt();
                     break;
                 
-                case RequestIDs.HandleSelection:
+                case RequestIDs.FilterMenuSelection:
                     int choice = data.Length > 0 ? (int)data[0] : 0;
                     yesOrNo = view.HandleSelection(choice);
                     break;

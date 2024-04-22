@@ -47,9 +47,13 @@ namespace ConsoleFileRenamer
     public enum RequestIDs
     {
         Null,
+        /// <summary> <b>string</b> statement, <b>(optional) bool</b> lineBefore, <b>(optional) bool</b> lineAfter </summary>
         PrintToConsole,
+        /// <summary> Show the main menu </summary>
         ShowPrompt,
-        HandleSelection,
-        
+        /// <summary> <b>int</b> choice </summary>
+        FilterMenuSelection,
+        /// <summary> <b>string</b> question, <b>(optional) bool</b> lineBefore </summary>
+        YesOrNoQuestion,
     }
 }

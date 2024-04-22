@@ -21,7 +21,7 @@ namespace ConsoleFileRenamer
                 // filter out non-integer input
                 if (!int.TryParse(input, out int choice)) continue;
 
-                continueRenaming = controller.IHandleRequest(RequestIDs.HandleSelection, choice);
+                continueRenaming = controller.IHandleRequest(RequestIDs.FilterMenuSelection, choice);
 
                 pipeline.ProcessRequests();
             }
