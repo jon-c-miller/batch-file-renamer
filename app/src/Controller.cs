@@ -10,15 +10,12 @@ namespace ConsoleFileRenamer
 
         readonly IRequestReceiver requestReceiver;
         readonly Model model = new();
-        View view;
+        readonly View view;
 
         public void IRelayRequest(RequestIDs id) => requestReceiver.IQueueRequest(id);
 
         public bool IHandleRequest(RequestIDs id, params object[] data)
         {
-            ConsoleExtensions.PrintToConsole("· ");
-            bool yesOrNo = true;
-
             switch (id)
             {
                 case RequestIDs.PrintToConsole:
@@ -33,11 +30,16 @@ namespace ConsoleFileRenamer
                 
                 case RequestIDs.FilterMenuSelection:
                     int choice = data.Length > 0 ? (int)data[0] : 0;
-                    yesOrNo = view.HandleSelection(choice);
-                    break;
+                    bool choiceIsValid = view.HandleSelection(choice);
+                    return choiceIsValid;
+                
+                case RequestIDs.YesOrNoQuestion:
+                    lineBefore = data.Length > 1 ? (bool)data[1] : false;
+                    bool yesOrNo = ConsoleExtensions.YesOrNoPrompt((string)data[0], lineBefore);
+                    return yesOrNo;
             }
 
-            return yesOrNo;
+            return true;
         }
     }
 }
