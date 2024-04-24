@@ -8,7 +8,7 @@
         <br><br>
 		This program is intended to provide the user with the ability to rename a given directory of files according to one of three styles: all words lowercased, all words uppercased, or first letter of each word uppercased. The user can optionally choose the way spacing between words is handled, choosing from white space, dash, or underscore.
         <br><br>
-        Note: project is currently at an early stage in development. Future revisions will see changes to infrastructure and successive implementation of features.
+        Note: project is currently at an intermediate stage in development. Future revisions will see successive implementation of features and possible changes to infrastructure.
     </ul><br>
 </details>
 
@@ -28,9 +28,9 @@
         <br>
         · Demonstrate knowledge of practices for successful integration with version control and docker
         <br>
-        · Demonstrate abilities regarding project structuring and iteration
+        · Demonstrate abilities regarding refactoring and iteration
         <br>
-        · Improve techniques regarding general decoupling and MVC-based design processes
+        · Generally improve techniques regarding decoupling and project structuring
         <br>
     </ul><br>
 </details>
@@ -42,6 +42,6 @@
 		<br>
 		<b>2.</b> Run Program.cs
 		<br><br>
-		<i>Created in VSCode 1.88 on Linux using .Net (C# Dev Kit)</i>
+		<i>Created in VSCode 1.88 on Linux using .NET (C# Dev Kit)</i>
 	</ul>
 </details>
