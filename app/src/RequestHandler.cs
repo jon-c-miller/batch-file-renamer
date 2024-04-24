@@ -113,7 +113,7 @@ namespace ConsoleFileRenamer
                 }
             }
 
-            PrintToConsole($"Found file: {fileName}", true);
+            PrintToConsole($"Found file to update: {fileName}", true);
             // PrintToConsole($"Path of file: {filePath}", true);
         }
 
@@ -131,18 +131,19 @@ namespace ConsoleFileRenamer
             ChangeState(States.Processing);
             PrintToConsole($"Executing operation...", true, true);
 
+            // create a new files directory to hold updated files
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var updatedFilesDir = Path.Combine(currentDirectory, "updated files");
+            if (!Directory.Exists(updatedFilesDir))
+                Directory.CreateDirectory(updatedFilesDir);
+
+            // get collection of full path of all files in current directory
+            IEnumerable<string> allFiles = Directory.EnumerateFiles(currentDirectory, "*", SearchOption.TopDirectoryOnly);
+            // string[] allFiles = Directory.GetFiles(currentDirectory);
+
             switch (operation)
             {
                 case OperationIDs.Lowercase:
-                    // create a new files directory to hold updated files
-                    var currentDirectory = Directory.GetCurrentDirectory();
-                    var updatedFilesDir = Path.Combine(currentDirectory, "new files");
-                    Directory.CreateDirectory(updatedFilesDir);
-
-                    // get collection of full path of all files in current directory
-                    IEnumerable<string> allFiles = Directory.EnumerateFiles(currentDirectory, "*", SearchOption.TopDirectoryOnly);
-                    // string[] allFiles = Directory.GetFiles(currentDirectory);
-
                     // copy the files in current directory and append 'new' to their filenames
                     foreach (var file in allFiles)
                     {
@@ -158,7 +159,7 @@ namespace ConsoleFileRenamer
                     break;
             }
             
-            PrintToConsole("Operation completed. Returning to main menu...", true);
+            PrintToConsole("\nOperation completed. Returning to main menu...", true);
             Console.ReadLine();
             ChangeState(States.UserPrompt);
         }
