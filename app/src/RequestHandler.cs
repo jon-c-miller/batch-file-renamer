@@ -144,11 +144,12 @@ namespace ConsoleFileRenamer
             switch (operation)
             {
                 case OperationIDs.Lowercase:
-                    // copy the files in current directory and append 'new' to their filenames
+                    // copy the files in current directory to the updated files directory and lowercase the filenames
                     foreach (var file in allFiles)
                     {
                         ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-                        MoveToDirectory(file, updatedFilesDir, originalFilename + " new");
+                        originalFilename = originalFilename.ToLower();
+                        MoveToDirectory(file, updatedFilesDir, originalFilename);
                     }
                     break;
 
