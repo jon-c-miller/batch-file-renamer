@@ -109,7 +109,14 @@ namespace ConsoleFileRenamer
             }
 
             PrintToConsole($"Found file: {fileName}", true);
-            PrintToConsole($"Path of file: {filePath}", true);
+            // PrintToConsole($"Path of file: {filePath}", true);
+        }
+
+        void MoveToDirectory(string filepath, string newDirectory, string newFilename)
+        {
+            string newPath = Path.Combine(newDirectory, newFilename);
+            File.Copy(filepath, newPath);
+            // File.Move(filepath, newPath);
         }
 
         void ExecuteOperation(OperationIDs operation)
@@ -121,6 +128,21 @@ namespace ConsoleFileRenamer
             switch (operation)
             {
                 case OperationIDs.Lowercase:
+                    // create a new files directory to hold updated files
+                    var currentDirectory = Directory.GetCurrentDirectory();
+                    var updatedFilesDir = Path.Combine(currentDirectory, "new files");
+                    Directory.CreateDirectory(updatedFilesDir);
+
+                    // get collection of full path of all files in current directory
+                    IEnumerable<string> allFiles = Directory.EnumerateFiles(currentDirectory, "*", SearchOption.TopDirectoryOnly);
+                    // string[] allFiles = Directory.GetFiles(currentDirectory);
+
+                    // copy the files in current directory and append 'new' to their filenames
+                    foreach (var file in allFiles)
+                    {
+                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+                        MoveToDirectory(file, updatedFilesDir, originalFilename + " new");
+                    }
                     break;
 
                 case OperationIDs.Uppercase:
