@@ -49,6 +49,11 @@ namespace ConsoleFileRenamer
             }
         }
 
+        void ChangeState(States newState)
+        {
+            currentState = newState;
+        }
+
         void PrintToConsole(string text, bool lineBefore = false, bool lineAfter = false) => ConsoleExtensions.PrintToConsole(text, lineBefore, lineAfter);
 
         bool YesOrNo(string text, bool lineBefore = false) => ConsoleExtensions.YesOrNoPrompt(text, lineBefore);
@@ -115,15 +120,16 @@ namespace ConsoleFileRenamer
         void MoveToDirectory(string filepath, string newDirectory, string newFilename)
         {
             string newPath = Path.Combine(newDirectory, newFilename);
-            File.Copy(filepath, newPath);
+            if (File.Exists(newPath))
+                PrintToConsole($"File '{newFilename}' already exists. Skipping...", true);
+            else File.Copy(filepath, newPath);
             // File.Move(filepath, newPath);
         }
 
         void ExecuteOperation(OperationIDs operation)
         {
-            currentState = States.Processing;
-            PrintToConsole($"Executing operation {operation}...");
-            Console.ReadLine();
+            ChangeState(States.Processing);
+            PrintToConsole($"Executing operation...", true, true);
 
             switch (operation)
             {
@@ -151,6 +157,10 @@ namespace ConsoleFileRenamer
                 case OperationIDs.CapitalizeFirst:
                     break;
             }
+            
+            PrintToConsole("Operation completed. Returning to main menu...", true);
+            Console.ReadLine();
+            ChangeState(States.UserPrompt);
         }
     }
 }
