@@ -19,53 +19,15 @@ namespace ConsoleFileRenamer
             switch (operation)
             {
                 case OperationIDs.Lowercase:
-                    // copy the files in current directory to the updated files directory and lowercase the filenames
-                    foreach (var file in allFiles)
-                    {
-                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-                        originalFilename = originalFilename.ToLower();
-                        MoveToDirectory(file, updatedFilesDir, originalFilename);
-                    }
+                    Lowercase(allFiles, updatedFilesDir);
                     break;
 
                 case OperationIDs.CapitalizeFirst:
-                    foreach (var file in allFiles)
-                    {
-                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-
-                        // split the filename into words using space as the separator
-                        string[] filenameWords = originalFilename.Split(' ');
-
-                        // prepare a new container for the updated words
-                        string[] updatedFilenameWords = new string[filenameWords.Length];
-
-                        // loop through all of the words, changing their first letters to uppercase
-                        for (int i = 0; i < filenameWords.Length; i++)
-                        {
-                            // convert the current word into a char array and update the first index to uppercase
-                            char[] updatedWordChars = filenameWords[i].ToCharArray();
-                            updatedWordChars[0] = char.ToUpper(updatedWordChars[0]);
-
-                            // convert the char array back to a string and save it to the matching index in updated filenames
-                            string updatedWord =  new(updatedWordChars);
-                            updatedFilenameWords[i] = updatedWord;
-                        }
-
-                        // join the words back together into a filename
-                        originalFilename = String.Join(' ', updatedFilenameWords);
-
-                        MoveToDirectory(file, updatedFilesDir, originalFilename);
-                    }
+                    Capitalize(allFiles, updatedFilesDir);
                     break;
 
                 case OperationIDs.Uppercase:
-                    // copy the files in current directory to the updated files directory and uppercase the filenames
-                    foreach (var file in allFiles)
-                    {
-                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-                        originalFilename = originalFilename.ToUpper();
-                        MoveToDirectory(file, updatedFilesDir, originalFilename);
-                    }
+                    Uppercase(allFiles, updatedFilesDir);
                     break;
             }
             
@@ -79,6 +41,59 @@ namespace ConsoleFileRenamer
         public static void PrintToConsole(string text, bool lineBefore = false, bool lineAfter = false) => ConsoleExtensions.PrintToConsole(text, lineBefore, lineAfter);
 
         public static bool YesOrNo(string text, bool lineBefore = false) => ConsoleExtensions.YesOrNoPrompt(text, lineBefore);
+
+        static void Lowercase(IEnumerable<string> allFiles, string updatedFilesDir)
+        {
+            // copy the files in current directory to the updated files directory and lowercase the filenames
+            foreach (var file in allFiles)
+            {
+                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+                originalFilename = originalFilename.ToLower();
+                MoveToDirectory(file, updatedFilesDir, originalFilename);
+            }
+        }
+
+        static void Capitalize(IEnumerable<string> allFiles, string updatedFilesDir)
+        {
+            foreach (var file in allFiles)
+            {
+                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+
+                // split the filename into words using space as the separator
+                string[] filenameWords = originalFilename.Split(' ');
+
+                // prepare a new container for the updated words
+                string[] updatedFilenameWords = new string[filenameWords.Length];
+
+                // loop through all of the words, changing their first letters to uppercase
+                for (int i = 0; i < filenameWords.Length; i++)
+                {
+                    // convert the current word into a char array and update the first index to uppercase
+                    char[] updatedWordChars = filenameWords[i].ToCharArray();
+                    updatedWordChars[0] = char.ToUpper(updatedWordChars[0]);
+
+                    // convert the char array back to a string and save it to the matching index in updated filenames
+                    string updatedWord =  new(updatedWordChars);
+                    updatedFilenameWords[i] = updatedWord;
+                }
+
+                // join the words back together into a filename
+                originalFilename = String.Join(' ', updatedFilenameWords);
+
+                MoveToDirectory(file, updatedFilesDir, originalFilename);
+            }
+        }
+
+        static void Uppercase(IEnumerable<string> allFiles, string updatedFilesDir)
+        {
+            // copy the files in current directory to the updated files directory and uppercase the filenames
+            foreach (var file in allFiles)
+            {
+                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+                originalFilename = originalFilename.ToUpper();
+                MoveToDirectory(file, updatedFilesDir, originalFilename);
+            }
+        }
 
         static void ExtractFilenameAndPath(string fullpath, out string fileName, out string filePath)
         {
