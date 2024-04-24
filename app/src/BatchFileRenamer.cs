@@ -5,26 +5,20 @@ namespace ConsoleFileRenamer
         public void Run()
         {
             RequestPipeline pipeline = new();
-            Controller controller = new(pipeline);
-            pipeline.Initialize(controller, false);
+            RequestHandler handler = new(pipeline);
+            pipeline.Initialize(handler, false);
 
             // loop until user chooses to quit
-            bool continueRenaming = true;
-            while (continueRenaming)
+            while (!handler.Quit) 
             {
-                controller.IHandleRequest(RequestIDs.ShowPrompt);
-
-                pipeline.ProcessRequests();
-
-                var input = Console.ReadLine();
-
-                // filter out non-integer input
-                if (!int.TryParse(input, out int choice)) continue;
-
-                continueRenaming = controller.IHandleRequest(RequestIDs.FilterMenuSelection, choice);
-
-                pipeline.ProcessRequests();
+                handler.Process();
+                pipeline.Process();
             }
+
+            // final message before exit
+            ConsoleExtensions.PrintToConsole("Thank you for using the file renaming utility. Have a nice day!", true);
+            ConsoleExtensions.PrintToConsole("Press any key to quit...", true);
+            Console.ReadKey();
         }
     }
 }
