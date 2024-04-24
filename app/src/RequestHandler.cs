@@ -154,6 +154,13 @@ namespace ConsoleFileRenamer
                     break;
 
                 case OperationIDs.Uppercase:
+                    // copy the files in current directory to the updated files directory and uppercase the filenames
+                    foreach (var file in allFiles)
+                    {
+                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+                        originalFilename = originalFilename.ToUpper();
+                        MoveToDirectory(file, updatedFilesDir, originalFilename);
+                    }
                     break;
 
                 case OperationIDs.CapitalizeFirst:
