@@ -153,6 +153,36 @@ namespace ConsoleFileRenamer
                     }
                     break;
 
+                case OperationIDs.CapitalizeFirst:
+                    foreach (var file in allFiles)
+                    {
+                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+
+                        // split the filename into words using space as the separator
+                        string[] filenameWords = originalFilename.Split(' ');
+
+                        // prepare a new container for the updated words
+                        string[] updatedFilenameWords = new string[filenameWords.Length];
+
+                        // loop through all of the words, changing their first letters to uppercase
+                        for (int i = 0; i < filenameWords.Length; i++)
+                        {
+                            // convert the current word into a char array and update the first index to uppercase
+                            char[] updatedWordChars = filenameWords[i].ToCharArray();
+                            updatedWordChars[0] = char.ToUpper(updatedWordChars[0]);
+
+                            // convert the char array back to a string and save it to the matching index in updated filenames
+                            string updatedWord =  new(updatedWordChars);
+                            updatedFilenameWords[i] = updatedWord;
+                        }
+
+                        // join the words back together into a filename
+                        originalFilename = String.Join(' ', updatedFilenameWords);
+
+                        MoveToDirectory(file, updatedFilesDir, originalFilename);
+                    }
+                    break;
+
                 case OperationIDs.Uppercase:
                     // copy the files in current directory to the updated files directory and uppercase the filenames
                     foreach (var file in allFiles)
@@ -161,9 +191,6 @@ namespace ConsoleFileRenamer
                         originalFilename = originalFilename.ToUpper();
                         MoveToDirectory(file, updatedFilesDir, originalFilename);
                     }
-                    break;
-
-                case OperationIDs.CapitalizeFirst:
                     break;
             }
             
