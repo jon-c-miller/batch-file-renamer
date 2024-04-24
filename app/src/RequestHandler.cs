@@ -91,23 +91,25 @@ namespace ConsoleFileRenamer
                 ExecuteOperation(operation);
         }
 
-        string ExtractFilename(string filepath)
+        void ExtractFilenameAndPath(string fullpath, out string fileName, out string filePath)
         {
             // loop backwards over the file entry (starting at the end after the extension) to get the filename
-            string filename = "";
-            for (int i = filepath.Length - 1; i > 0; i--)
+            fileName = "";
+            filePath = "";
+            for (int i = fullpath.Length - 1; i > 0; i--)
             {
                 // parse backwards until the directory marker '/' or '\' is found
-                if (filepath[i] == '/' || filepath[i] == '\\' )
+                if (fullpath[i] == '/' || fullpath[i] == '\\' )
                 {
-                    // extract the name of the file
-                    filename = filepath.Substring(i + 1).Trim();
+                    // extract the name of the file and its path (without filename)
+                    fileName = fullpath.Substring(i + 1).Trim();
+                    filePath = fullpath.Substring(0, i + 1);
                     break;
                 }
             }
 
-            PrintToConsole($"Found file: {filename}", true);
-            return filename;
+            PrintToConsole($"Found file: {fileName}", true);
+            PrintToConsole($"Path of file: {filePath}", true);
         }
 
         void ExecuteOperation(OperationIDs operation)
@@ -127,8 +129,6 @@ namespace ConsoleFileRenamer
                 case OperationIDs.CapitalizeFirst:
                     break;
             }
-
-            PrintToConsole($"Updating file '{currentFilenameOld}' to '{currentFilenameNew}'...", true);
         }
     }
 }
