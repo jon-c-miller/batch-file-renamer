@@ -11,11 +11,8 @@ namespace ConsoleFileRenamer
         readonly Database database = new();
 
         public bool Quit { get; private set; }
-        string currentFilenameOld = "";
-        string currentFilenameNew = "";
 
         States currentState = States.UserPrompt;
-        OperationIDs currentOperation = OperationIDs.None;
 
         public void Process()
         {
