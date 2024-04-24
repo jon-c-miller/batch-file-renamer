@@ -7,7 +7,7 @@ namespace ConsoleFileRenamer
         IRequestHandler handler;
         bool showLogs;
 
-        readonly ConcurrentQueue<RequestIDs> pipeline = new();
+        readonly ConcurrentQueue<Request> pipeline = new();
 
         public void Initialize(IRequestHandler handler, bool showLogs)
         {
@@ -15,45 +15,45 @@ namespace ConsoleFileRenamer
             this.showLogs = showLogs;
         }
 
-        public void ProcessRequests()
+        public void Process()
         {
             while (pipeline.Count > 0)
             {
-                pipeline.TryDequeue(out RequestIDs id);
+                pipeline.TryDequeue(out Request request);
 
-                if (showLogs) ConsoleExtensions.PrintToConsole($"Processing id '{id}'...", true, true);
-                handler.IHandleRequest(id);
+                if (request != null)
+                {
+                    if (showLogs) ConsoleExtensions.PrintToConsole($"Processing id '{request}'...", true, true);
+                    handler.IHandleRequest(request.ID, request.Data);
+                }
             }
         }
 
-        public void IQueueRequest(RequestIDs id)
+        public void IQueueRequest(RequestIDs id, params object[] data)
         {
-            pipeline.Enqueue(id);
+            pipeline.Enqueue(new(id, data));
             if (showLogs) ConsoleExtensions.PrintToConsole($"Received request {id}. Request queue has {pipeline.Count} requests.", true);
         }
     }
 
+    public class Request(RequestIDs id, params object[] data)
+    {
+        public RequestIDs ID { get => id; set => id = value; }
+        public object[] Data { get => data; set => data = value; }
+    }
+
     public interface IRequestHandler
     {
-        void IRelayRequest(RequestIDs id);
-        bool IHandleRequest(RequestIDs id, params object[] data);
+        void IHandleRequest(RequestIDs id, params object[] data);
     }
 
     public interface IRequestReceiver
     {
-        void IQueueRequest(RequestIDs id);
+        void IQueueRequest(RequestIDs id, params object[] data);
     }
 
     public enum RequestIDs
     {
         Null,
-        /// <summary> <b>string</b> statement, <b>(optional) bool</b> lineBefore, <b>(optional) bool</b> lineAfter </summary>
-        PrintToConsole,
-        /// <summary> Show the main menu </summary>
-        ShowPrompt,
-        /// <summary> <b>int</b> choice </summary>
-        FilterMenuSelection,
-        /// <summary> <b>string</b> question, <b>(optional) bool</b> lineBefore </summary>
-        YesOrNoQuestion,
     }
 }
