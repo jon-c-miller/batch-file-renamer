@@ -13,6 +13,15 @@
 </details>
 
 <details>
+    <summary>Development</summary>
+    <ul><br>
+        This project originally started with an MVC structure to provide a baseline architecture to work from and keep logic and data separate. However, as the project grew, a request system was introduced, which altered the program flow and necessitated a reevaluation of the overall project structure.
+        <br><br>
+        As the existence of model, view, and controller classes became more of a forced compliance to an architecture rather than a structure to guide development, the classes were removed or transitioned to designations that seemed more practical.
+    </ul><br>
+</details>
+
+<details>
     <summary>Core Goals</summary>
     <ul><br>
         · Demonstrate general competency with C# in a .NET console environment
