@@ -91,6 +91,25 @@ namespace ConsoleFileRenamer
                 ExecuteOperation(operation);
         }
 
+        string ExtractFilename(string filepath)
+        {
+            // loop backwards over the file entry (starting at the end after the extension) to get the filename
+            string filename = "";
+            for (int i = filepath.Length - 1; i > 0; i--)
+            {
+                // parse backwards until the directory marker '/' or '\' is found
+                if (filepath[i] == '/' || filepath[i] == '\\' )
+                {
+                    // extract the name of the file
+                    filename = filepath.Substring(i + 1).Trim();
+                    break;
+                }
+            }
+
+            PrintToConsole($"Found file: {filename}", true);
+            return filename;
+        }
+
         void ExecuteOperation(OperationIDs operation)
         {
             currentState = States.Processing;
