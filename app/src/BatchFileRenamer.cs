@@ -4,21 +4,21 @@ namespace ConsoleFileRenamer
     {
         public void Run()
         {
-            Controller controller = new();
+            RequestPipeline pipeline = new();
+            RequestHandler handler = new(pipeline);
+            pipeline.Initialize(handler, false);
 
             // loop until user chooses to quit
-            bool continueRenaming = true;
-            while (continueRenaming)
+            while (!handler.Quit) 
             {
-                controller.ShowPrompt();
-
-                var input = Console.ReadLine();
-
-                // filter out non-integer input
-                if (!int.TryParse(input, out int choice)) continue;
-
-                continueRenaming = controller.HandleSelection(choice);
+                handler.Process();
+                pipeline.Process();
             }
+
+            // final message before exit
+            ConsoleExtensions.PrintToConsole("Thank you for using the file renaming utility. Have a nice day!", true);
+            ConsoleExtensions.PrintToConsole("Press any key to quit...", true);
+            Console.ReadKey();
         }
     }
 }

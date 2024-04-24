@@ -1,6 +1,6 @@
 namespace ConsoleFileRenamer
 {
-    public class Model
+    public class Database
     {
         Dictionary<TextIDs, string> displayText = new()
         {
@@ -15,11 +15,11 @@ namespace ConsoleFileRenamer
 
             { TextIDs.PromptMainMenuOptions, "Please choose an option (1 - 4): " },
 
-            { TextIDs.QueryOption1Confirm, "Update filenames in the current directory to be lowercase? (Y/N): " },
-            { TextIDs.QueryOption2Confirm, "Update filenames in the current directory to have capitalized words? (Y/N): " },
-            { TextIDs.QueryOption3Confirm, "Update filenames in the current directory to be uppercase? (Y/N): " },
-            { TextIDs.QueryQuitConfirm, "Quit application? (Y/N):  " },
-            { TextIDs.QueryApplyToCurrentDirectory, "Confirmation: Apply requested filename changes? (Y/N): " },
+            { TextIDs.ConfirmOption1, "Update filenames in the current directory to be lowercase? (Y/N): " },
+            { TextIDs.ConfirmOption2, "Update filenames in the current directory to have capitalized words? (Y/N): " },
+            { TextIDs.ConfirmOption3, "Update filenames in the current directory to be uppercase? (Y/N): " },
+            { TextIDs.ConfirmQuit, "Quit application? (Y/N): " },
+            { TextIDs.ConfirmApplyChanges, "Confirmation: Apply requested filename changes? (Y/N): " },
         };
 
         /// <summary> Get output text that matches id. </summary>
@@ -42,6 +42,21 @@ namespace ConsoleFileRenamer
         }
     }
 
+    public enum States
+    {
+        UserPrompt,
+        ConfirmPrompt,
+        Processing,
+    }
+
+    public enum OperationIDs
+    {
+        Lowercase,
+        Uppercase,
+        CapitalizeFirst,
+        None,
+    }
+
     public enum TextIDs
     {
         InfoWelcome,
@@ -52,14 +67,13 @@ namespace ConsoleFileRenamer
         InfoQuit,
         InfoInvalidChoice,
         InfoCurrentDirectory,
-        QueryApplyToCurrentDirectory,
 
         PromptMainMenuOptions,
 
-        QueryOption1Confirm,
-        QueryOption2Confirm,
-        QueryOption3Confirm,
-        QueryQuitConfirm,
-        QueryGenericOK,
+        ConfirmOption1,
+        ConfirmOption2,
+        ConfirmOption3,
+        ConfirmQuit,
+        ConfirmApplyChanges,
     }
 }
