@@ -4,7 +4,7 @@ namespace ConsoleFileRenamer
 {
     public class RequestPipeline : IRequestReceiver
     {
-        IRequestHandler handler;
+        IRequestHandler? handler;
         bool showLogs;
 
         readonly ConcurrentQueue<Request> pipeline = new();
@@ -19,12 +19,12 @@ namespace ConsoleFileRenamer
         {
             while (pipeline.Count > 0)
             {
-                pipeline.TryDequeue(out Request request);
+                pipeline.TryDequeue(out Request? request);
 
                 if (request != null)
                 {
                     if (showLogs) ConsoleExtensions.PrintToConsole($"Processing id '{request}'...", true, true);
-                    handler.IHandleRequest(request.ID, request.Data);
+                    handler?.IHandleRequest(request.ID, request.Data);
                 }
             }
         }
