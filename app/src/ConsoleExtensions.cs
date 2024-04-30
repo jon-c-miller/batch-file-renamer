@@ -5,7 +5,7 @@ public static class ConsoleExtensions
     {
         // end line when first entering the prompt if desired
         if (endlineBefore)
-            Console.Write("\n");
+            Console.WriteLine();
 
         string? continueChoice;
         while (true)
@@ -25,11 +25,11 @@ public static class ConsoleExtensions
     {
         // print the given message with optional line spacing before and after
         if (endlineBefore)
-            Console.Write("\n");
+            Console.WriteLine();
 
         Console.Write(message);
 
         if (endlineAfter)
-            Console.Write("\n");
+            Console.WriteLine();
     }
 }
