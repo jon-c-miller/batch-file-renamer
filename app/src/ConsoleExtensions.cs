@@ -7,11 +7,11 @@ public static class ConsoleExtensions
         if (endlineBefore)
             Console.Write("\n");
 
-        string continueChoice;
+        string? continueChoice;
         while (true)
         {
             Console.Write($"{promptText}");
-            continueChoice = Console.ReadLine().ToUpper();
+            continueChoice = Console.ReadLine()?.ToUpper();
             if (continueChoice == "N")
                 return false;
             else if (continueChoice == "Y")
