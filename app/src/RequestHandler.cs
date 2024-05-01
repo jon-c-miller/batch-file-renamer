@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace ConsoleFileRenamer
 {
     public class RequestHandler : IRequestHandler
@@ -50,6 +52,24 @@ namespace ConsoleFileRenamer
 
         void ChangeState(States newState)
         {
+            switch (newState)
+            {
+                case States.UserPrompt:
+                    if (currentState == States.Processing)
+                    {
+                        Operations.PrintToConsole(database.GetDisplayText(TextIDs.PromptComplete), true);
+                        Console.ReadLine();
+                    }
+                    break;
+
+                case States.ConfirmPrompt:
+
+                    break;
+
+                case States.Processing:
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoExecuting), true, true);
+                    break;
+            }
             currentState = newState;
         }
 

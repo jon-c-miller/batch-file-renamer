@@ -4,8 +4,6 @@ namespace ConsoleFileRenamer
     {
         public static void Execute(OperationIDs operation, IRequestReceiver requestReceiver)
         {
-            PrintToConsole($"Executing operation...", true, true);
-
             // create a new files directory to hold updated files
             var currentDirectory = Directory.GetCurrentDirectory();
             var updatedFilesDir = Path.Combine(currentDirectory, "updated files");
@@ -30,9 +28,7 @@ namespace ConsoleFileRenamer
                     Uppercase(allFiles, updatedFilesDir);
                     break;
             }
-            
-            PrintToConsole("\nOperation completed. Returning to main menu...", true);
-            Console.ReadLine();
+
             requestReceiver.IQueueRequest(RequestIDs.ChangeState, States.UserPrompt);
         }
 
