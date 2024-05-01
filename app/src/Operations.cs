@@ -2,7 +2,7 @@ namespace ConsoleFileRenamer
 {
     public static class Operations
     {
-        public static void Execute(OperationIDs operation, IRequestReceiver requestReceiver)
+        public static void Execute(OperationIDs operation, IRequestReceiver requestReceiver, bool copyToNewDir)
         {
             // create a new files directory to hold updated files
             var currentDirectory = Directory.GetCurrentDirectory();
@@ -17,15 +17,15 @@ namespace ConsoleFileRenamer
             switch (operation)
             {
                 case OperationIDs.Lowercase:
-                    Lowercase(allFiles, updatedFilesDir);
+                    Lowercase(allFiles, updatedFilesDir, copyToNewDir);
                     break;
 
                 case OperationIDs.CapitalizeFirst:
-                    Capitalize(allFiles, updatedFilesDir);
+                    Capitalize(allFiles, updatedFilesDir, copyToNewDir);
                     break;
 
                 case OperationIDs.Uppercase:
-                    Uppercase(allFiles, updatedFilesDir);
+                    Uppercase(allFiles, updatedFilesDir, copyToNewDir);
                     break;
             }
 
@@ -38,18 +38,18 @@ namespace ConsoleFileRenamer
 
         public static bool YesOrNo(string text, bool lineBefore = false) => ConsoleExtensions.YesOrNoPrompt(text, lineBefore);
 
-        static void Lowercase(IEnumerable<string> allFiles, string updatedFilesDir)
+        static void Lowercase(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir)
         {
             // copy the files in current directory to the updated files directory and lowercase the filenames
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
                 originalFilename = originalFilename.ToLower();
-                MoveToDirectory(file, updatedFilesDir, originalFilename);
+                MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
             }
         }
 
-        static void Capitalize(IEnumerable<string> allFiles, string updatedFilesDir)
+        static void Capitalize(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir)
         {
             foreach (var file in allFiles)
             {
@@ -76,18 +76,18 @@ namespace ConsoleFileRenamer
                 // join the words back together into a filename
                 originalFilename = String.Join(' ', updatedFilenameWords);
 
-                MoveToDirectory(file, updatedFilesDir, originalFilename);
+                MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
             }
         }
 
-        static void Uppercase(IEnumerable<string> allFiles, string updatedFilesDir)
+        static void Uppercase(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir)
         {
             // copy the files in current directory to the updated files directory and uppercase the filenames
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
                 originalFilename = originalFilename.ToUpper();
-                MoveToDirectory(file, updatedFilesDir, originalFilename);
+                MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
             }
         }
 
@@ -109,16 +109,19 @@ namespace ConsoleFileRenamer
             }
 
             PrintToConsole($"Found file to update: {fileName}", true);
-            // PrintToConsole($"Path of file: {filePath}", true);
         }
 
-        static void MoveToDirectory(string filepath, string newDirectory, string newFilename)
+        static void MoveToDirectory(string filepath, string newDirectory, string newFilename, bool copyFiles)
         {
+            // copy or move the files based on user selection
             string newPath = Path.Combine(newDirectory, newFilename);
-            if (File.Exists(newPath))
-                PrintToConsole($"File '{newFilename}' already exists. Skipping...", true);
-            else File.Copy(filepath, newPath);
-            // File.Move(filepath, newPath);
+            if (!File.Exists(newPath))
+            {
+                if (copyFiles)
+                    File.Copy(filepath, newPath);
+                else File.Move(filepath, newPath);
+            }
+            else PrintToConsole($"File '{newFilename}' already exists. Skipping...", true);
         }
     }
 }

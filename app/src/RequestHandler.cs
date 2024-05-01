@@ -1,5 +1,3 @@
-using Microsoft.VisualBasic;
-
 namespace ConsoleFileRenamer
 {
     public class RequestHandler : IRequestHandler
@@ -33,6 +31,7 @@ namespace ConsoleFileRenamer
                     break;
 
                 case States.Processing:
+                    Operations.PrintToConsole(".");
                     break;
             }
         }
@@ -57,7 +56,7 @@ namespace ConsoleFileRenamer
                         Operations.PrintToConsole(database.GetDisplayText(TextIDs.PromptComplete), true);
                         Console.ReadLine();
                     }
-
+                    
                     Operations.ClearConsole();
                     Operations.PrintToConsole(database.GetMainMenuText());
                     break;
@@ -100,13 +99,16 @@ namespace ConsoleFileRenamer
 
             bool continueOperation = Operations.YesOrNo(confirmText, true);
 
+            // provide option to relocate or copy newly named files to new directory
+            bool copyToNewDir = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmKeepOriginalFiles), true);
+
             if (continueOperation)
                 continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
             
             if (continueOperation)
             {
                 ChangeState(States.Processing);
-                Operations.Execute(operation, requestReceiver);
+                Operations.Execute(operation, requestReceiver, copyToNewDir);
             }
         }
     }

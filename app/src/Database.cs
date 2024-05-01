@@ -22,6 +22,7 @@ namespace ConsoleFileRenamer
             { TextIDs.ConfirmOption3, "Update filenames in the current directory to be uppercase? (Y/N): " },
             { TextIDs.ConfirmQuit, "Quit application? (Y/N): " },
             { TextIDs.ConfirmApplyChanges, "Confirmation: Apply requested filename changes? (Y/N): " },
+            { TextIDs.ConfirmKeepOriginalFiles, "Newly named files will be created in '/updated files'. \nKeep original files (copy instead of move)? (Y/N): " },
         };
 
         /// <summary> Get output text that matches id. </summary>
@@ -62,6 +63,7 @@ namespace ConsoleFileRenamer
         ConfirmOption1,
         ConfirmOption2,
         ConfirmOption3,
+        ConfirmKeepOriginalFiles,
         ConfirmQuit,
         ConfirmApplyChanges,
     }
