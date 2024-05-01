@@ -15,6 +15,7 @@ namespace ConsoleFileRenamer
             { TextIDs.InfoExecuting, "Executing operation..." },
 
             { TextIDs.PromptMainMenuOptions, "Please choose an option (1 - 4): " },
+            { TextIDs.PromptChooseSpacingSymbol, "Please choose a replacement symbol. (_/-/ ): " },
             { TextIDs.PromptComplete, "\nOperation completed. Press enter to return to main menu..." },
 
             { TextIDs.ConfirmOption1, "Update filenames in the current directory to be lowercase? (Y/N): " },
@@ -23,6 +24,7 @@ namespace ConsoleFileRenamer
             { TextIDs.ConfirmQuit, "Quit application? (Y/N): " },
             { TextIDs.ConfirmApplyChanges, "Confirmation: Apply requested filename changes? (Y/N): " },
             { TextIDs.ConfirmKeepOriginalFiles, "Newly named files will be created in '/updated files'. \nKeep original files (copy instead of move)? (Y/N): " },
+            { TextIDs.ConfirmChangeSymbol, "The symbol between words in the filenames can also be updated. \nThis will replace all occurrences of _, -, and empty space characters with the symbol chosen in the next prompt. \nChange the symbol between words in the filenames? (Y/N): " }
         };
 
         /// <summary> Get output text that matches id. </summary>
@@ -58,12 +60,14 @@ namespace ConsoleFileRenamer
         InfoExecuting,
 
         PromptMainMenuOptions,
+        PromptChooseSpacingSymbol,
         PromptComplete,
 
         ConfirmOption1,
         ConfirmOption2,
         ConfirmOption3,
         ConfirmKeepOriginalFiles,
+        ConfirmChangeSymbol,
         ConfirmQuit,
         ConfirmApplyChanges,
     }

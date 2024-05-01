@@ -2,7 +2,7 @@ namespace ConsoleFileRenamer
 {
     public static class Operations
     {
-        public static void Execute(OperationIDs operation, IRequestReceiver requestReceiver, bool copyToNewDir)
+        public static void Execute(OperationIDs operation, IRequestReceiver requestReceiver, bool copyToNewDir, Symbols betweenWordSymbol)
         {
             // create a new files directory to hold updated files
             var currentDirectory = Directory.GetCurrentDirectory();
@@ -17,15 +17,15 @@ namespace ConsoleFileRenamer
             switch (operation)
             {
                 case OperationIDs.Lowercase:
-                    Lowercase(allFiles, updatedFilesDir, copyToNewDir);
+                    Lowercase(allFiles, updatedFilesDir, copyToNewDir, betweenWordSymbol);
                     break;
 
                 case OperationIDs.CapitalizeFirst:
-                    Capitalize(allFiles, updatedFilesDir, copyToNewDir);
+                    Capitalize(allFiles, updatedFilesDir, copyToNewDir, betweenWordSymbol);
                     break;
 
                 case OperationIDs.Uppercase:
-                    Uppercase(allFiles, updatedFilesDir, copyToNewDir);
+                    Uppercase(allFiles, updatedFilesDir, copyToNewDir, betweenWordSymbol);
                     break;
             }
 
@@ -38,18 +38,22 @@ namespace ConsoleFileRenamer
 
         public static bool YesOrNo(string text, bool lineBefore = false) => ConsoleExtensions.YesOrNoPrompt(text, lineBefore);
 
-        static void Lowercase(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir)
+        static void Lowercase(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir, Symbols betweenWordSymbol)
         {
             // copy the files in current directory to the updated files directory and lowercase the filenames
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
                 originalFilename = originalFilename.ToLower();
+
+                if (betweenWordSymbol != Symbols.Unmodified)
+                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, (char)betweenWordSymbol);
+
                 MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
             }
         }
 
-        static void Capitalize(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir)
+        static void Capitalize(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir, Symbols betweenWordSymbol)
         {
             foreach (var file in allFiles)
             {
@@ -76,17 +80,24 @@ namespace ConsoleFileRenamer
                 // join the words back together into a filename
                 originalFilename = String.Join(' ', updatedFilenameWords);
 
+                if (betweenWordSymbol != Symbols.Unmodified)
+                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, (char)betweenWordSymbol);
+
                 MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
             }
         }
 
-        static void Uppercase(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir)
+        static void Uppercase(IEnumerable<string> allFiles, string updatedFilesDir, bool copyToNewDir, Symbols betweenWordSymbol)
         {
             // copy the files in current directory to the updated files directory and uppercase the filenames
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
                 originalFilename = originalFilename.ToUpper();
+
+                if (betweenWordSymbol != Symbols.Unmodified)
+                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, (char)betweenWordSymbol);
+
                 MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
             }
         }
@@ -109,6 +120,14 @@ namespace ConsoleFileRenamer
             }
 
             PrintToConsole($"Found file to update: {fileName}", true);
+        }
+
+        static string UpdateSymbolsBetweenWords(string originalFilename, char newSymbol)
+        {
+            originalFilename = originalFilename.Replace('_', ' ');
+            originalFilename = originalFilename.Replace('-', ' ');
+            originalFilename = originalFilename.Replace(' ', newSymbol);
+            return originalFilename;
         }
 
         static void MoveToDirectory(string filepath, string newDirectory, string newFilename, bool copyFiles)

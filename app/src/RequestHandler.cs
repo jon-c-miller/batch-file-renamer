@@ -99,17 +99,25 @@ namespace ConsoleFileRenamer
             bool continueOperation = Operations.YesOrNo(confirmText, true);
             if (continueOperation)
             {
-            // provide option to relocate or copy newly named files to new directory
-            bool copyToNewDir = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmKeepOriginalFiles), true);
+                // provide option to relocate or copy newly named files to new directory
+                bool copyToNewDir = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmKeepOriginalFiles), true);
 
+                // provide option to update space/symbol between words in filenames
+                Symbols spaceBetweenSymbol = Symbols.Unmodified;
+                bool changeSymbolBetweenWords = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmChangeSymbol), true);
+                if (changeSymbolBetweenWords)
+                    spaceBetweenSymbol = (Symbols)ConsoleExtensions.CharChoicesPrompt(database.GetDisplayText(TextIDs.PromptChooseSpacingSymbol), false, '_', '-', ' ');
+                
+                Operations.PrintToConsole($"Chose {spaceBetweenSymbol}", true);
+                
                 // final confirmation
-            if (continueOperation)
-                continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
-            
-            if (continueOperation)
-            {
-                ChangeState(States.Processing);
-                Operations.Execute(operation, requestReceiver, copyToNewDir);
+                if (continueOperation)
+                    continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
+                
+                if (continueOperation)
+                {
+                    ChangeState(States.Processing);
+                    Operations.Execute(operation, requestReceiver, copyToNewDir, spaceBetweenSymbol);
                     return;
                 }
             }
@@ -130,5 +138,13 @@ namespace ConsoleFileRenamer
         Uppercase,
         CapitalizeFirst,
         None,
+    }
+
+    public enum Symbols
+    {
+        Unmodified,
+        Underscore = '_',
+        Hyphen = '-',
+        EmptySpace = ' ',
     }
 }
