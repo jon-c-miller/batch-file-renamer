@@ -44,6 +44,10 @@ namespace ConsoleFileRenamer
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+
+                // skip this program's executable file
+                if (originalFilename == System.AppDomain.CurrentDomain.FriendlyName) continue;
+
                 string newFilename = originalFilename.ToLower();
 
                 if (betweenWordSymbol != Symbols.Unmodified)
@@ -59,6 +63,10 @@ namespace ConsoleFileRenamer
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+
+                // skip this program's executable file
+                if (originalFilename == System.AppDomain.CurrentDomain.FriendlyName) continue;
+
                 string newFilename = originalFilename;
 
                 // if changing the symbol between words, temporarily set to empty space so splitting works correctly
@@ -106,6 +114,10 @@ namespace ConsoleFileRenamer
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+
+                // skip this program's executable file
+                if (originalFilename == System.AppDomain.CurrentDomain.FriendlyName) continue;
+
                 string newFilename = originalFilename.ToUpper();
 
                 if (betweenWordSymbol != Symbols.Unmodified)
