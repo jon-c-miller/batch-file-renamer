@@ -11,20 +11,14 @@ namespace ConsoleFileRenamer
         readonly Database database = new();
 
         public bool Quit { get; private set; }
-        string currentFilenameOld = "";
-        string currentFilenameNew = "";
 
         States currentState = States.UserPrompt;
-        OperationIDs currentOperation = OperationIDs.None;
 
         public void Process()
         {
             switch (currentState)
             {
                 case States.UserPrompt:
-                    Console.Clear();
-                    PrintToConsole(database.GetMainMenuText());
-
                     var input = Console.ReadLine();
 
                     // filter out non-integer input
@@ -37,6 +31,7 @@ namespace ConsoleFileRenamer
                     break;
 
                 case States.Processing:
+                    Operations.PrintToConsole(".");
                     break;
             }
         }
@@ -45,22 +40,37 @@ namespace ConsoleFileRenamer
         {
             switch (id)
             {
-
+                case RequestIDs.ChangeState:
+                    ChangeState((States)data[0]);
+                    break;
             }
         }
 
         void ChangeState(States newState)
         {
+            switch (newState)
+            {
+                case States.UserPrompt:
+                    if (currentState == States.Processing)
+                    {
+                        Operations.PrintToConsole(database.GetDisplayText(TextIDs.PromptComplete), true);
+                        Console.ReadLine();
+                    }
+                    
+                    Operations.ClearConsole();
+                    Operations.PrintToConsole(database.GetMainMenuText());
+                    break;
+
+                case States.Processing:
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoExecuting), true, true);
+                    break;
+            }
             currentState = newState;
         }
 
-        void PrintToConsole(string text, bool lineBefore = false, bool lineAfter = false) => ConsoleExtensions.PrintToConsole(text, lineBefore, lineAfter);
-
-        bool YesOrNo(string text, bool lineBefore = false) => ConsoleExtensions.YesOrNoPrompt(text, lineBefore);
-
         bool HandleSelection(int choice)
         {
-            // handle the main 3 choices or confirm quit
+            // handle the main menu choices, including quit
             switch (choice)
             {
                 case 1:
@@ -76,7 +86,7 @@ namespace ConsoleFileRenamer
                     break;
                 
                 case 4:
-                    Quit = YesOrNo(database.GetDisplayText(TextIDs.ConfirmQuit));
+                    Quit = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmQuit));
                     break;
             }
 
@@ -85,118 +95,35 @@ namespace ConsoleFileRenamer
 
         void ConfirmOperation(OperationIDs operation, string confirmText)
         {
-            PrintToConsole(database.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
+            Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
 
-            bool continueOperation = YesOrNo(confirmText, true);
+            bool continueOperation = Operations.YesOrNo(confirmText, true);
+
+            // provide option to relocate or copy newly named files to new directory
+            bool copyToNewDir = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmKeepOriginalFiles), true);
 
             if (continueOperation)
-                continueOperation = YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
+                continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
             
             if (continueOperation)
-                ExecuteOperation(operation);
-        }
-
-        void ExtractFilenameAndPath(string fullpath, out string fileName, out string filePath)
-        {
-            // loop backwards over the file entry (starting at the end after the extension) to get the filename
-            fileName = "";
-            filePath = "";
-            for (int i = fullpath.Length - 1; i > 0; i--)
             {
-                // parse backwards until the directory marker '/' or '\' is found
-                if (fullpath[i] == '/' || fullpath[i] == '\\' )
-                {
-                    // extract the name of the file and its path (without filename)
-                    fileName = fullpath.Substring(i + 1).Trim();
-                    filePath = fullpath.Substring(0, i + 1);
-                    break;
-                }
+                ChangeState(States.Processing);
+                Operations.Execute(operation, requestReceiver, copyToNewDir);
             }
-
-            PrintToConsole($"Found file to update: {fileName}", true);
-            // PrintToConsole($"Path of file: {filePath}", true);
         }
+    }
 
-        void MoveToDirectory(string filepath, string newDirectory, string newFilename)
-        {
-            string newPath = Path.Combine(newDirectory, newFilename);
-            if (File.Exists(newPath))
-                PrintToConsole($"File '{newFilename}' already exists. Skipping...", true);
-            else File.Copy(filepath, newPath);
-            // File.Move(filepath, newPath);
-        }
+    public enum States
+    {
+        UserPrompt,
+        Processing,
+    }
 
-        void ExecuteOperation(OperationIDs operation)
-        {
-            ChangeState(States.Processing);
-            PrintToConsole($"Executing operation...", true, true);
-
-            // create a new files directory to hold updated files
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var updatedFilesDir = Path.Combine(currentDirectory, "updated files");
-            if (!Directory.Exists(updatedFilesDir))
-                Directory.CreateDirectory(updatedFilesDir);
-
-            // get collection of full path of all files in current directory
-            IEnumerable<string> allFiles = Directory.EnumerateFiles(currentDirectory, "*", SearchOption.TopDirectoryOnly);
-            // string[] allFiles = Directory.GetFiles(currentDirectory);
-
-            switch (operation)
-            {
-                case OperationIDs.Lowercase:
-                    // copy the files in current directory to the updated files directory and lowercase the filenames
-                    foreach (var file in allFiles)
-                    {
-                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-                        originalFilename = originalFilename.ToLower();
-                        MoveToDirectory(file, updatedFilesDir, originalFilename);
-                    }
-                    break;
-
-                case OperationIDs.CapitalizeFirst:
-                    foreach (var file in allFiles)
-                    {
-                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-
-                        // split the filename into words using space as the separator
-                        string[] filenameWords = originalFilename.Split(' ');
-
-                        // prepare a new container for the updated words
-                        string[] updatedFilenameWords = new string[filenameWords.Length];
-
-                        // loop through all of the words, changing their first letters to uppercase
-                        for (int i = 0; i < filenameWords.Length; i++)
-                        {
-                            // convert the current word into a char array and update the first index to uppercase
-                            char[] updatedWordChars = filenameWords[i].ToCharArray();
-                            updatedWordChars[0] = char.ToUpper(updatedWordChars[0]);
-
-                            // convert the char array back to a string and save it to the matching index in updated filenames
-                            string updatedWord =  new(updatedWordChars);
-                            updatedFilenameWords[i] = updatedWord;
-                        }
-
-                        // join the words back together into a filename
-                        originalFilename = String.Join(' ', updatedFilenameWords);
-
-                        MoveToDirectory(file, updatedFilesDir, originalFilename);
-                    }
-                    break;
-
-                case OperationIDs.Uppercase:
-                    // copy the files in current directory to the updated files directory and uppercase the filenames
-                    foreach (var file in allFiles)
-                    {
-                        ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-                        originalFilename = originalFilename.ToUpper();
-                        MoveToDirectory(file, updatedFilesDir, originalFilename);
-                    }
-                    break;
-            }
-            
-            PrintToConsole("\nOperation completed. Returning to main menu...", true);
-            Console.ReadLine();
-            ChangeState(States.UserPrompt);
-        }
+    public enum OperationIDs
+    {
+        Lowercase,
+        Uppercase,
+        CapitalizeFirst,
+        None,
     }
 }

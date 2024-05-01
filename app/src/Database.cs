@@ -11,15 +11,18 @@ namespace ConsoleFileRenamer
             { TextIDs.InfoOption3, "3. UPPERCASE ENTIRE FILENAME" },
             { TextIDs.InfoQuit, "4. Quit" },
             { TextIDs.InfoInvalidChoice, "is not a valid choice. " },
-            { TextIDs.InfoCurrentDirectory, $"Current directory is {Directory.GetCurrentDirectory()}. "},
+            { TextIDs.InfoCurrentDirectory, $"Current directory is {Directory.GetCurrentDirectory()}. " },
+            { TextIDs.InfoExecuting, "Executing operation..." },
 
             { TextIDs.PromptMainMenuOptions, "Please choose an option (1 - 4): " },
+            { TextIDs.PromptComplete, "\nOperation completed. Press enter to return to main menu..." },
 
             { TextIDs.ConfirmOption1, "Update filenames in the current directory to be lowercase? (Y/N): " },
             { TextIDs.ConfirmOption2, "Update filenames in the current directory to have capitalized words? (Y/N): " },
             { TextIDs.ConfirmOption3, "Update filenames in the current directory to be uppercase? (Y/N): " },
             { TextIDs.ConfirmQuit, "Quit application? (Y/N): " },
             { TextIDs.ConfirmApplyChanges, "Confirmation: Apply requested filename changes? (Y/N): " },
+            { TextIDs.ConfirmKeepOriginalFiles, "Newly named files will be created in '/updated files'. \nKeep original files (copy instead of move)? (Y/N): " },
         };
 
         /// <summary> Get output text that matches id. </summary>
@@ -42,21 +45,6 @@ namespace ConsoleFileRenamer
         }
     }
 
-    public enum States
-    {
-        UserPrompt,
-        ConfirmPrompt,
-        Processing,
-    }
-
-    public enum OperationIDs
-    {
-        Lowercase,
-        Uppercase,
-        CapitalizeFirst,
-        None,
-    }
-
     public enum TextIDs
     {
         InfoWelcome,
@@ -67,12 +55,15 @@ namespace ConsoleFileRenamer
         InfoQuit,
         InfoInvalidChoice,
         InfoCurrentDirectory,
+        InfoExecuting,
 
         PromptMainMenuOptions,
+        PromptComplete,
 
         ConfirmOption1,
         ConfirmOption2,
         ConfirmOption3,
+        ConfirmKeepOriginalFiles,
         ConfirmQuit,
         ConfirmApplyChanges,
     }
