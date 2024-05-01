@@ -53,15 +53,16 @@
         <br><b>Method 1 (run in code editor)</b><br>
         <ul>
             · Download project and run in desired code editor as usual (Program.cs)
-            <br>
-            <br><i>It is recommended to choose 'Y' in response to 'Keep original files (copy instead of move)?' to avoid having app.csproj and Program.cs moved</i>
+            <br><i>Choose 'Y' in response to 'Keep original files (copy instead of move)?' to avoid app.csproj and Program.cs being moved</i>
         </ul>
     </ul>
     <ul>
         <b>Method 2 (run after building from source)</b><br>
         <ul>
             · Open the project in desired code editor and build the release: <code>dotnet publish -c Release</code>
-            <br>· Copy/move the single file executable in app/bin/Release/publish to desired working directory and run
+            <br>· Locate the single file executable in app/bin/Release/publish
+            <br>· Copy or move the executable to a directory with files to be renamed
+            <br>· Run the executable via terminal
         </ul>
     </ul>
     <ul>
