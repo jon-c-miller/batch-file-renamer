@@ -21,9 +21,6 @@ namespace ConsoleFileRenamer
             switch (currentState)
             {
                 case States.UserPrompt:
-                    Operations.ClearConsole();
-                    Operations.PrintToConsole(database.GetMainMenuText());
-
                     var input = Console.ReadLine();
 
                     // filter out non-integer input
@@ -60,10 +57,9 @@ namespace ConsoleFileRenamer
                         Operations.PrintToConsole(database.GetDisplayText(TextIDs.PromptComplete), true);
                         Console.ReadLine();
                     }
-                    break;
 
-                case States.ConfirmPrompt:
-
+                    Operations.ClearConsole();
+                    Operations.PrintToConsole(database.GetMainMenuText());
                     break;
 
                 case States.Processing:
@@ -75,7 +71,7 @@ namespace ConsoleFileRenamer
 
         bool HandleSelection(int choice)
         {
-            // handle the main 3 choices or confirm quit
+            // handle the main menu choices, including quit
             switch (choice)
             {
                 case 1:

@@ -7,6 +7,7 @@ namespace ConsoleFileRenamer
             RequestPipeline pipeline = new();
             RequestHandler handler = new(pipeline);
             pipeline.Initialize(handler, false);
+            handler.IHandleRequest(RequestIDs.ChangeState, States.UserPrompt);
 
             // loop until user chooses to quit
             while (!handler.Quit) 
