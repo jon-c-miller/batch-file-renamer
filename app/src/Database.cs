@@ -19,7 +19,7 @@ namespace ConsoleFileRenamer
             { TextIDs.InfoOption1Request, "2. Change filenames to lowercase (Original FilenamE >> original filename)" },
             { TextIDs.InfoOption2Request, "2. Capitalize filenames (Original FilenamE >> Original Filename)" },
             { TextIDs.InfoOption3Request, "2. Change filenames to uppercase (Original FilenamE >> ORIGINAL FILENAME)" },
-            { TextIDs.InfoSymbolReplacement, "3. Replace any '_' and '-' characters, as well as empty spaces with a " },
+            { TextIDs.InfoSymbolReplacement, "3. Replace any '_' and '-' characters, as well as empty spaces with " },
 
 
             { TextIDs.PromptMainMenuOptions, "Please choose an option (1 - 4): " },

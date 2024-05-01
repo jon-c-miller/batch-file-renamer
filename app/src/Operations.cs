@@ -44,12 +44,13 @@ namespace ConsoleFileRenamer
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-                originalFilename = originalFilename.ToLower();
+                string newFilename = originalFilename.ToLower();
 
                 if (betweenWordSymbol != Symbols.Unmodified)
-                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, (char)betweenWordSymbol);
+                    newFilename = UpdateSymbolsBetweenWords(newFilename, (char)betweenWordSymbol);
 
-                MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
+                MoveToDirectory(file, updatedFilesDir, newFilename, copyToNewDir);
+                PrintToConsole($"Updated '{originalFilename}' to '{newFilename}'.", true);
             }
         }
 
@@ -58,18 +59,19 @@ namespace ConsoleFileRenamer
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
+                string newFilename = originalFilename;
 
                 // if changing the symbol between words, temporarily set to empty space so splitting works correctly
                 if (betweenWordSymbol != Symbols.Unmodified)
                 {
-                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, ' ');
+                    newFilename = UpdateSymbolsBetweenWords(newFilename, ' ');
                 }
 
                 // ensure that filename starts off as fully lowercase
-                originalFilename = originalFilename.ToLower();
+                newFilename = newFilename.ToLower();
 
                 // split the filename into words using space as the separator
-                string[] filenameWords = originalFilename.Split(' ');
+                string[] filenameWords = newFilename.Split(' ');
 
                 // prepare a new container for the updated words
                 string[] updatedFilenameWords = new string[filenameWords.Length];
@@ -87,13 +89,14 @@ namespace ConsoleFileRenamer
                 }
 
                 // join the words back together into a filename
-                originalFilename = String.Join(' ', updatedFilenameWords);
+                newFilename = String.Join(' ', updatedFilenameWords);
 
                 // apply the intended symbol update
                 if (betweenWordSymbol != Symbols.Unmodified)
-                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, (char)betweenWordSymbol);
+                    newFilename = UpdateSymbolsBetweenWords(newFilename, (char)betweenWordSymbol);
 
-                MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
+                MoveToDirectory(file, updatedFilesDir, newFilename, copyToNewDir);
+                PrintToConsole($"Updated '{originalFilename}' to '{newFilename}'.", true);
             }
         }
 
@@ -103,12 +106,13 @@ namespace ConsoleFileRenamer
             foreach (var file in allFiles)
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-                originalFilename = originalFilename.ToUpper();
+                string newFilename = originalFilename.ToUpper();
 
                 if (betweenWordSymbol != Symbols.Unmodified)
-                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, (char)betweenWordSymbol);
+                    newFilename = UpdateSymbolsBetweenWords(newFilename, (char)betweenWordSymbol);
 
-                MoveToDirectory(file, updatedFilesDir, originalFilename, copyToNewDir);
+                MoveToDirectory(file, updatedFilesDir, newFilename, copyToNewDir);
+                PrintToConsole($"Updated '{originalFilename}' to '{newFilename}'.", true);
             }
         }
 
@@ -128,8 +132,6 @@ namespace ConsoleFileRenamer
                     break;
                 }
             }
-
-            PrintToConsole($"Found file to update: {fileName}", true);
         }
 
         static string UpdateSymbolsBetweenWords(string originalFilename, char newSymbol)
