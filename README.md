@@ -51,16 +51,24 @@
     <summary>How to Use the Project</summary>
     <ul>
         <br><b>Method 1 (run in code editor)</b><br>
-        <ul>· Download project and run in desired code editor as usual (Program.cs)</ul>
+        <ul>
+            · Download project and run in desired code editor as usual (Program.cs)
+            <br>
+            <br><i>It is recommended to choose 'Y' in response to 'Keep original files (copy instead of move)?' to avoid having app.csproj and Program.cs moved</i>
+        </ul>
     </ul>
     <ul>
-        <b>Method 2 (run with Docker)</b><br>
+        <b>Method 2 (run after building from source)</b><br>
         <ul>
-			· Build the docker image
-			<br><code>docker build -t batch-file-renamer .</code>
-			<br>
-			<br>· Run the image
-			<br><code>docker run --rm -it batch-file-renamer</code>
+            · Open the project in desired code editor and build the release: <code>dotnet publish -c Release</code>
+            <br>· Copy/move the single file executable in app/bin/Release/publish to desired working directory and run
+        </ul>
+    </ul>
+    <ul>
+        <b>Method 3 (run with Docker)</b><br>
+        <ul>
+			· Build the docker image: <code>docker build -t batch-file-renamer .</code>
+			<br>· Run the image: <code>docker run --rm -it batch-file-renamer</code>
 			<br>
 			<br><b>-t</b> tags the resulting image as 'batch-file-renamer'
 			<br><b>--rm</b> removes the image container when done
