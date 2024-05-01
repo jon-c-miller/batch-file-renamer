@@ -10,7 +10,7 @@ namespace ConsoleFileRenamer
         readonly IRequestReceiver requestReceiver;
         readonly Database database = new();
 
-        public bool Quit { get; private set; }
+        public bool Continue { get; private set; } = true;
 
         States currentState = States.UserPrompt;
 
@@ -27,7 +27,7 @@ namespace ConsoleFileRenamer
                     // ignore invalid choice attempts
                     if (choice < 1 || choice > 4) return;
 
-                    HandleSelection(choice);
+                    Continue = HandleSelection(choice);
                     break;
 
                 case States.Processing:
@@ -86,8 +86,7 @@ namespace ConsoleFileRenamer
                     break;
                 
                 case 4:
-                    Quit = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmQuit));
-                    break;
+                    return !Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmQuit));
             }
 
             return true;
@@ -98,18 +97,50 @@ namespace ConsoleFileRenamer
             Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
 
             bool continueOperation = Operations.YesOrNo(confirmText, true);
-
-            // provide option to relocate or copy newly named files to new directory
-            bool copyToNewDir = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmKeepOriginalFiles), true);
-
-            if (continueOperation)
-                continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
-            
             if (continueOperation)
             {
-                ChangeState(States.Processing);
-                Operations.Execute(operation, requestReceiver, copyToNewDir);
+                // provide option to relocate or copy newly named files to new directory
+                bool copyToNewDir = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmKeepOriginalFiles), true);
+
+                // provide option to update space/symbol between words in filenames
+                Symbols spaceBetweenSymbol = Symbols.Unmodified;
+                bool changeSymbolBetweenWords = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmChangeSymbol), true);
+                if (changeSymbolBetweenWords)
+                    spaceBetweenSymbol = (Symbols)ConsoleExtensions.CharChoicesPrompt(database.GetDisplayText(TextIDs.PromptChooseSpacingSymbol), false, '_', '-', ' ');
+                
+                // show a list of operations to be completed
+                Operations.ClearConsole();
+                Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoRequestedChanges), false, true);
+
+                if (copyToNewDir)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoCopy), true);
+                else Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoMove), true);
+
+                if (operation == OperationIDs.Lowercase)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoOption1Request), true);
+                else if (operation == OperationIDs.CapitalizeFirst)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoOption2Request), true);
+                else if (operation == OperationIDs.Uppercase)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoOption3Request), true);
+
+                if (spaceBetweenSymbol != Symbols.Unmodified)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoSymbolReplacement) + $"'{(char)spaceBetweenSymbol}'", true);
+                
+                Operations.PrintToConsole("", true);
+
+                // final confirmation
+                if (continueOperation)
+                    continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
+                
+                if (continueOperation)
+                {
+                    ChangeState(States.Processing);
+                    Operations.Execute(operation, requestReceiver, copyToNewDir, spaceBetweenSymbol);
+                    return;
+                }
             }
+            
+            ChangeState(States.UserPrompt);
         }
     }
 
@@ -125,5 +156,13 @@ namespace ConsoleFileRenamer
         Uppercase,
         CapitalizeFirst,
         None,
+    }
+
+    public enum Symbols
+    {
+        Unmodified,
+        Underscore = '_',
+        Hyphen = '-',
+        EmptySpace = ' ',
     }
 }
