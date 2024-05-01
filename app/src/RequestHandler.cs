@@ -10,7 +10,7 @@ namespace ConsoleFileRenamer
         readonly IRequestReceiver requestReceiver;
         readonly Database database = new();
 
-        public bool Quit { get; private set; }
+        public bool Continue { get; private set; } = true;
 
         States currentState = States.UserPrompt;
 
@@ -27,7 +27,7 @@ namespace ConsoleFileRenamer
                     // ignore invalid choice attempts
                     if (choice < 1 || choice > 4) return;
 
-                    HandleSelection(choice);
+                    Continue = HandleSelection(choice);
                     break;
 
                 case States.Processing:
@@ -86,8 +86,7 @@ namespace ConsoleFileRenamer
                     break;
                 
                 case 4:
-                    Quit = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmQuit));
-                    break;
+                    return !Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmQuit));
             }
 
             return true;
@@ -98,10 +97,12 @@ namespace ConsoleFileRenamer
             Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoCurrentDirectory), true);
 
             bool continueOperation = Operations.YesOrNo(confirmText, true);
-
+            if (continueOperation)
+            {
             // provide option to relocate or copy newly named files to new directory
             bool copyToNewDir = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmKeepOriginalFiles), true);
 
+                // final confirmation
             if (continueOperation)
                 continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
             
@@ -109,7 +110,11 @@ namespace ConsoleFileRenamer
             {
                 ChangeState(States.Processing);
                 Operations.Execute(operation, requestReceiver, copyToNewDir);
+                    return;
+                }
             }
+            
+            ChangeState(States.UserPrompt);
         }
     }
 

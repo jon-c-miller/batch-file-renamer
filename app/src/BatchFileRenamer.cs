@@ -10,7 +10,7 @@ namespace ConsoleFileRenamer
             handler.IHandleRequest(RequestIDs.ChangeState, States.UserPrompt);
 
             // loop until user chooses to quit
-            while (!handler.Quit) 
+            while (handler.Continue) 
             {
                 handler.Process();
                 pipeline.Process();
