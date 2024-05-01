@@ -48,12 +48,25 @@
 </details>
 
 <details open>
-	<summary>How to Use the Project</summary>
-	<ul><br>
-		<b>1.</b> Download and open in desired code editor as usual
-		<br>
-		<b>2.</b> Run Program.cs
-		<br><br>
-		<i>Created in VSCode 1.88 on Linux using .NET (C# Dev Kit)</i>
-	</ul>
+    <summary>How to Use the Project</summary>
+    <ul>
+        <br><b>Method 1 (run in code editor)</b><br>
+        <ul>· Download project and run in desired code editor as usual (Program.cs)</ul>
+    </ul>
+    <ul>
+        <b>Method 2 (run with Docker)</b><br>
+        <ul>
+			· Build the docker image
+			<br><code>docker build -t batch-file-renamer .</code>
+			<br>
+			<br>· Run the image
+			<br><code>docker run --rm -it batch-file-renamer</code>
+			<br>
+			<br><b>-t</b> tags the resulting image as 'batch-file-renamer'
+			<br><b>--rm</b> removes the image container when done
+			<br><b>-it</b> shows console output
+			<br>
+		</ul>
+        <br><i>Created in VSCode 1.88 on Linux using .Net (C# Dev Kit)</i>
+    </ul>
 </details>
