@@ -44,21 +44,6 @@ namespace ConsoleFileRenamer
         }
     }
 
-    public enum States
-    {
-        UserPrompt,
-        ConfirmPrompt,
-        Processing,
-    }
-
-    public enum OperationIDs
-    {
-        Lowercase,
-        Uppercase,
-        CapitalizeFirst,
-        None,
-    }
-
     public enum TextIDs
     {
         InfoWelcome,

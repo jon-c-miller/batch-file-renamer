@@ -114,4 +114,18 @@ namespace ConsoleFileRenamer
             }
         }
     }
+
+    public enum States
+    {
+        UserPrompt,
+        Processing,
+    }
+
+    public enum OperationIDs
+    {
+        Lowercase,
+        Uppercase,
+        CapitalizeFirst,
+        None,
+    }
 }
