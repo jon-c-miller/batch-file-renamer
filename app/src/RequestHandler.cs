@@ -108,8 +108,26 @@ namespace ConsoleFileRenamer
                 if (changeSymbolBetweenWords)
                     spaceBetweenSymbol = (Symbols)ConsoleExtensions.CharChoicesPrompt(database.GetDisplayText(TextIDs.PromptChooseSpacingSymbol), false, '_', '-', ' ');
                 
-                Operations.PrintToConsole($"Chose {spaceBetweenSymbol}", true);
+                // show a list of operations to be completed
+                Operations.ClearConsole();
+                Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoRequestedChanges), false, true);
+
+                if (copyToNewDir)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoCopy), true);
+                else Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoMove), true);
+
+                if (operation == OperationIDs.Lowercase)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoOption1Request), true);
+                else if (operation == OperationIDs.CapitalizeFirst)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoOption2Request), true);
+                else if (operation == OperationIDs.Uppercase)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoOption3Request), true);
+
+                if (spaceBetweenSymbol != Symbols.Unmodified)
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoSymbolReplacement) + $"'{(char)spaceBetweenSymbol}'", true);
                 
+                Operations.PrintToConsole("", true);
+
                 // final confirmation
                 if (continueOperation)
                     continueOperation = Operations.YesOrNo(database.GetDisplayText(TextIDs.ConfirmApplyChanges), true);
