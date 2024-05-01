@@ -59,6 +59,15 @@ namespace ConsoleFileRenamer
             {
                 ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
 
+                // if changing the symbol between words, temporarily set to empty space so splitting works correctly
+                if (betweenWordSymbol != Symbols.Unmodified)
+                {
+                    originalFilename = UpdateSymbolsBetweenWords(originalFilename, ' ');
+                }
+
+                // ensure that filename starts off as fully lowercase
+                originalFilename = originalFilename.ToLower();
+
                 // split the filename into words using space as the separator
                 string[] filenameWords = originalFilename.Split(' ');
 
@@ -80,6 +89,7 @@ namespace ConsoleFileRenamer
                 // join the words back together into a filename
                 originalFilename = String.Join(' ', updatedFilenameWords);
 
+                // apply the intended symbol update
                 if (betweenWordSymbol != Symbols.Unmodified)
                     originalFilename = UpdateSymbolsBetweenWords(originalFilename, (char)betweenWordSymbol);
 
