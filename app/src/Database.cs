@@ -4,8 +4,8 @@ namespace ConsoleFileRenamer
     {
         Dictionary<TextIDs, string> displayText = new()
         {
-            { TextIDs.InfoWelcome, "Welcome to the batch file renaming main menu! Please choose a style to get started." },
-            { TextIDs.InfoHeader, "-- Renaming Styles --" },
+            { TextIDs.InfoWelcome, "Welcome to the batch file renaming main menu! \nPlease choose a file naming style to get started." },
+            { TextIDs.InfoHeader, "-- Available Options --" },
             { TextIDs.InfoOption1, "1. lowercase entire filename" },
             { TextIDs.InfoOption2, "2. Capitalize First Letter Of Each Word In Filename" },
             { TextIDs.InfoOption3, "3. UPPERCASE ENTIRE FILENAME" },
