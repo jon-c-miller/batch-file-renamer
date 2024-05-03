@@ -12,7 +12,6 @@ namespace ConsoleFileRenamer
 
             // get collection of full path of all files in current directory
             IEnumerable<string> allFiles = Directory.EnumerateFiles(currentDirectory, "*", SearchOption.TopDirectoryOnly);
-            // string[] allFiles = Directory.GetFiles(currentDirectory);
 
             switch (operation)
             {
@@ -43,10 +42,10 @@ namespace ConsoleFileRenamer
             // copy the files in current directory to the updated files directory and lowercase the filenames
             foreach (var file in allFiles)
             {
-                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-
                 // skip this program's executable file
-                if (originalFilename == System.AppDomain.CurrentDomain.FriendlyName) continue;
+                if (file == System.Environment.ProcessPath) continue;
+
+                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
 
                 string newFilename = originalFilename.ToLower();
 
@@ -62,10 +61,10 @@ namespace ConsoleFileRenamer
         {
             foreach (var file in allFiles)
             {
-                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-
                 // skip this program's executable file
-                if (originalFilename == System.AppDomain.CurrentDomain.FriendlyName) continue;
+                if (file == System.Environment.ProcessPath) continue;
+
+                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
 
                 string newFilename = originalFilename;
 
@@ -113,10 +112,10 @@ namespace ConsoleFileRenamer
             // copy the files in current directory to the updated files directory and uppercase the filenames
             foreach (var file in allFiles)
             {
-                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
-
                 // skip this program's executable file
-                if (originalFilename == System.AppDomain.CurrentDomain.FriendlyName) continue;
+                if (file == System.Environment.ProcessPath) continue;
+
+                ExtractFilenameAndPath(file, out string originalFilename, out string originalFilePath);
 
                 string newFilename = originalFilename.ToUpper();
 
