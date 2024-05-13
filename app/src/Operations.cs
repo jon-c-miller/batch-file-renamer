@@ -2,7 +2,7 @@ namespace ConsoleFileRenamer
 {
     public static class Operations
     {
-        public static void Execute(OperationIDs operation, IRequestReceiver requestReceiver, bool copyToNewDir, Symbols betweenWordSymbol)
+        public static void Execute(OperationIDs operation, bool copyToNewDir, Symbols betweenWordSymbol)
         {
             // create a new files directory to hold updated files
             var currentDirectory = Directory.GetCurrentDirectory();
@@ -27,8 +27,6 @@ namespace ConsoleFileRenamer
                     Uppercase(allFiles, updatedFilesDir, copyToNewDir, betweenWordSymbol);
                     break;
             }
-
-            requestReceiver.IQueueRequest(RequestIDs.ChangeState, States.UserPrompt);
         }
 
         public static void ClearConsole() => Console.Clear();
