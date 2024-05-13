@@ -12,7 +12,7 @@
         <br><br>
         Upon obtaining responses to a succession of prompts designed to customize the output, a final summary of requested operations is displayed to the user before they commit to the changes. Cancellation and escaping back to the main menu can be done right after selecting an option from the menu, and right before committing final changes.
         <br><br>
-        The changes to the files will be printed during final execution, followed by a final completion notification and prompt to return to the main menu.
+        A list of changes to the filenames will be printed to the console during execution of the requested tasks, followed by a final completion notification and prompt to return to the main menu. While tasks are executed in the directory of the program's executable, those same tasks are not performed on the actual executable file itself.
     </ul><br>
 </details>
 
@@ -25,11 +25,15 @@
         <br><br>
         Thus the project evolved around use of a simplified synchronous pipeline, which takes incoming requests as a request id enum along with generic data, wraps them in a Request class instance, adds that instance to a list, then passes the id and data back to a handler class one at a time. 
         <br><br>
-        Early on, it was decided that all print statements would be kept in a single database collection and accessed via keyword enum. This helped to keep program elements organized and easier to read without having lots of console statements crowding the logic flow.
+        Early on, a key design decision was to have all print statements kept in a single database collection and accessible via keyword enum. This added abstraction helped to keep program elements organized and easier to read without having lots of console statements crowding the logic flow.
         <br><br>
-        A rudimentary state machine to assist in basic flow control was later added, which allowed the main program loop to be greatly simplified, with high level repeating logic placed in a more intuitive way.
+        A rudimentary state machine to assist in basic flow control was later added, but later review of the project's practical needs revealed that a state machine wasn't really necessary, considering that there were only two basic states: waiting on user input and the near instantanous processing of final execution. The state machine structure was therefore removed and replaced with a boolean to work with the process method, allowing console input/parsing when true.
         <br><br>
-        In general, the infrastructure used may be a bit overkill considering the simple nature of its tasks. But it offered fresh challenges, as well as a chance to experiment with interesting architecture that will surely pave the way for improved development in future projects.
+        At a certain point, the main program loop was greatly simplified by moving all lower level logic into either the request processing class or the request handler class, resulting in a while loop that called a Process() method in each class as long as a Continue boolean was true in the handler class. This allowed the program's higher level nature to be easily observed and understood, and all but eliminated yet another potential place for unintended runtime errors.
+        <br><br>
+        In general, it could be said that the infrastructure developed alongside this project was at times overkill considering the simple nature of its tasks, but there was never a point where the architecture itself became an obstacle that could not quickly be overcome by simplifying, using a different approach, or remolding it to the immediate needs of the system.
+        <br><br>
+        Overall, the design path of this project offered fresh, exciting, and interesting challenges, as well as a chance to build a system from the ground up while experimenting with various architecture outside of the framework of a game engine.
     </ul><br>
 </details>
 
