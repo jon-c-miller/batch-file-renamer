@@ -12,27 +12,21 @@ namespace ConsoleFileRenamer
 
         public bool Continue { get; private set; } = true;
 
-        States currentState = States.UserPrompt;
+        bool isReady = false;
 
         public void Process()
         {
-            switch (currentState)
+            if (isReady)
             {
-                case States.UserPrompt:
-                    var input = Console.ReadLine();
+                var input = Console.ReadLine();
 
-                    // filter out non-integer input
-                    if (!int.TryParse(input, out int choice)) return;
+                // filter out non-integer input
+                if (!int.TryParse(input, out int choice)) return;
 
-                    // ignore invalid choice attempts
-                    if (choice < 1 || choice > 4) return;
+                // ignore invalid choice attempts
+                if (choice < 1 || choice > 4) return;
 
-                    Continue = HandleSelection(choice);
-                    break;
-
-                case States.Processing:
-                    Operations.PrintToConsole(".");
-                    break;
+                Continue = HandleSelection(choice);
             }
         }
 
@@ -40,32 +34,17 @@ namespace ConsoleFileRenamer
         {
             switch (id)
             {
-                case RequestIDs.ChangeState:
-                    ChangeState((States)data[0]);
-                    break;
-            }
-        }
-
-        void ChangeState(States newState)
-        {
-            switch (newState)
-            {
-                case States.UserPrompt:
-                    if (currentState == States.Processing)
-                    {
-                        Operations.PrintToConsole(database.GetDisplayText(TextIDs.PromptComplete), true);
-                        Console.ReadLine();
-                    }
-                    
+                case RequestIDs.DisplayMenu:
                     Operations.ClearConsole();
                     Operations.PrintToConsole(database.GetMainMenuText());
+                    isReady = true;
                     break;
-
-                case States.Processing:
-                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoExecuting), true, true);
+                
+                case RequestIDs.DisplayCompletion:
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.PromptComplete), true);
+                    Console.ReadLine();
                     break;
             }
-            currentState = newState;
         }
 
         bool HandleSelection(int choice)
@@ -134,20 +113,15 @@ namespace ConsoleFileRenamer
                 
                 if (continueOperation)
                 {
-                    ChangeState(States.Processing);
-                    Operations.Execute(operation, requestReceiver, copyToNewDir, spaceBetweenSymbol);
-                    return;
+                    isReady = false;
+                    Operations.PrintToConsole(database.GetDisplayText(TextIDs.InfoExecuting), true, true);
+                    Operations.Execute(operation, copyToNewDir, spaceBetweenSymbol);
+                    requestReceiver.IQueueRequest(RequestIDs.DisplayCompletion);
                 }
             }
             
-            ChangeState(States.UserPrompt);
+            requestReceiver.IQueueRequest(RequestIDs.DisplayMenu);
         }
-    }
-
-    public enum States
-    {
-        UserPrompt,
-        Processing,
     }
 
     public enum OperationIDs

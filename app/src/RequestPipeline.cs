@@ -55,6 +55,7 @@ namespace ConsoleFileRenamer
     public enum RequestIDs
     {
         Null,
-        ChangeState,
+        DisplayMenu,
+        DisplayCompletion,
     }
 }
