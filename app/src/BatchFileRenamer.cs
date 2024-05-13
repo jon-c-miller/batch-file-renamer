@@ -7,13 +7,13 @@ namespace ConsoleFileRenamer
             RequestPipeline pipeline = new();
             RequestHandler handler = new(pipeline);
             pipeline.Initialize(handler, false);
-            handler.IHandleRequest(RequestIDs.ChangeState, States.UserPrompt);
+            pipeline.IQueueRequest(RequestIDs.DisplayMenu);
 
             // loop until user chooses to quit
             while (handler.Continue) 
             {
-                handler.Process();
                 pipeline.Process();
+                handler.Process();
             }
 
             // final message before exit
